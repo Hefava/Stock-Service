@@ -17,12 +17,11 @@ public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "categoryID")
     private Long categoryID;
 
-    //@Column(name = "nombre", length = 50, nullable = false, unique = true)
+    @Column(name = "nombre", length = 50, nullable = false, unique = true)
     private String nombre;
 
-    //@Column(name = "descripcion", length = 90, nullable = false)
+    @Column(name = "descripcion", length = 90, nullable = false)
     private String descripcion;
 }

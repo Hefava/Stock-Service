@@ -2,14 +2,13 @@ package com.bootcampPragma.Stock.ports.persistency.mysql.adapter;
 
 import com.bootcampPragma.Stock.domain.model.Category;
 import com.bootcampPragma.Stock.domain.spi.ICategoryPersistencePort;
-import com.bootcampPragma.Stock.domain.exception.CategoryAlreadyExistsException;
 import com.bootcampPragma.Stock.ports.persistency.mysql.mapper.CategoryEntityMapper;
 import com.bootcampPragma.Stock.ports.persistency.mysql.repository.ICategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,9 +19,6 @@ public class CategoryAdapter implements ICategoryPersistencePort {
 
     @Override
     public void saveCategory(Category category) {
-        if (categoryRepository.findByNombre(category.getNombre()).isPresent()) {
-            throw new CategoryAlreadyExistsException();
-        }
         categoryRepository.save(categoryEntityMapper.toEntity(category));
     }
 
@@ -30,6 +26,12 @@ public class CategoryAdapter implements ICategoryPersistencePort {
     public List<Category> getCategoriesAscByNombre() {
         return categoryRepository.findAllByOrderByNombreAsc().stream()
                 .map(categoryEntityMapper::toCategory)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    @Override
+    public Optional<Category> findByNombre(String nombre) {
+        return categoryRepository.findByNombre(nombre)
+                .map(categoryEntityMapper::toCategory);
     }
 }
