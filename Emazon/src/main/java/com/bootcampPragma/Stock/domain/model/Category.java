@@ -1,8 +1,6 @@
 package com.bootcampPragma.Stock.domain.model;
 
 public class Category {
-    private Long categoryID;
-
     public Long getCategoryID() {
         return categoryID;
     }
@@ -27,6 +25,7 @@ public class Category {
         this.descripcion = descripcion;
     }
 
+    private Long categoryID;
     private String nombre;
     private String descripcion;
 
