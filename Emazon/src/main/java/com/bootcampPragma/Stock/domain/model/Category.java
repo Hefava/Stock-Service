@@ -1,6 +1,7 @@
 package com.bootcampPragma.Stock.domain.model;
 
 public class Category {
+
     public Long getCategoryID() {
         return categoryID;
     }
@@ -25,15 +26,14 @@ public class Category {
         this.descripcion = descripcion;
     }
 
-    private Long categoryID;
-    private String nombre;
-    private String descripcion;
-
-    // Constructor con parámetros
     public Category(Long categoryID, String nombre, String descripcion) {
         this.categoryID = categoryID;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
+
+    private Long categoryID;
+    private String nombre;
+    private String descripcion;
 
 }
