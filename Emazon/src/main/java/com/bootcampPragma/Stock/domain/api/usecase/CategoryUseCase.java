@@ -6,6 +6,8 @@ import com.bootcampPragma.Stock.domain.exception.InvalidCategoryDescriptionLengt
 import com.bootcampPragma.Stock.domain.exception.InvalidCategoryNameLengthException;
 import com.bootcampPragma.Stock.domain.model.Category;
 import com.bootcampPragma.Stock.domain.spi.ICategoryPersistencePort;
+import com.bootcampPragma.Stock.domain.utils.PageRequestDomain;
+import com.bootcampPragma.Stock.domain.utils.SortDomain;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public List<Category> getCategoriesAscByNombre() {
-        return categoryPersistencePort.getCategoriesAscByNombre();
+    public List<Category> getCategoriesByNombre(SortDomain sort, PageRequestDomain pageRequest) {
+        return categoryPersistencePort.getCategoriesByNombre(sort, pageRequest);
     }
 }
