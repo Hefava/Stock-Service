@@ -3,14 +3,13 @@ package com.bootcampPragma.Stock.Categoria.domain.model;
 public class Category {
 
     private Long categoryID;
+    private String nombre;
 
     public Category(Long categoryID, String nombre, String descripcion) {
         this.categoryID = categoryID;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
-
-    private String nombre;
 
     public Long getCategoryID() {
         return categoryID;

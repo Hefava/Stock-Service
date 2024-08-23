@@ -1,4 +1,4 @@
-package com.bootcampPragma.Stock.beanconfiguration;
+package com.bootcampPragma.Stock.Config;
 
 import com.bootcampPragma.Stock.Categoria.domain.api.ICategoryServicePort;
 import com.bootcampPragma.Stock.Categoria.domain.spi.ICategoryPersistencePort;
