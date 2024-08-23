@@ -1,11 +1,11 @@
 package com.bootcampPragma.Stock.domain.api.usecase;
 
-import com.bootcampPragma.Stock.domain.api.ICategoryServicePort;
-import com.bootcampPragma.Stock.domain.exception.CategoryAlreadyExistsException;
-import com.bootcampPragma.Stock.domain.exception.InvalidCategoryDescriptionLengthException;
-import com.bootcampPragma.Stock.domain.exception.InvalidCategoryNameLengthException;
-import com.bootcampPragma.Stock.domain.model.Category;
-import com.bootcampPragma.Stock.domain.spi.ICategoryPersistencePort;
+import com.bootcampPragma.Stock.Categoria.domain.api.usecase.CategoryUseCase;
+import com.bootcampPragma.Stock.Categoria.domain.exception.CategoryAlreadyExistsException;
+import com.bootcampPragma.Stock.Categoria.domain.exception.InvalidCategoryDescriptionLengthException;
+import com.bootcampPragma.Stock.Categoria.domain.exception.InvalidCategoryNameLengthException;
+import com.bootcampPragma.Stock.Categoria.domain.model.Category;
+import com.bootcampPragma.Stock.Categoria.domain.spi.ICategoryPersistencePort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
