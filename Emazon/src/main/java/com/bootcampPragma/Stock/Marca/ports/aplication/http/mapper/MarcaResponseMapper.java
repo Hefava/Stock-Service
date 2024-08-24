@@ -8,6 +8,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface MarcaResponseMapper {
+
     MarcaResponse toResponse(Marca marca);
+
     List<MarcaResponse> toResponseList(List<Marca> marcaList);
 }

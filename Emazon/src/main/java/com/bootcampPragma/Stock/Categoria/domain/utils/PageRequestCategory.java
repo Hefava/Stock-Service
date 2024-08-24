@@ -1,7 +1,7 @@
 package com.bootcampPragma.Stock.Categoria.domain.utils;
 
-public class PageRequestDomain {
-    public PageRequestDomain(int page, int size) {
+public class PageRequestCategory {
+    public PageRequestCategory(int page, int size) {
         this.page = page;
         this.size = size;
     }

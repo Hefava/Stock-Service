@@ -2,8 +2,8 @@ package com.bootcampPragma.Stock.Categoria.ports.persistency.mysql.adapter;
 
 import com.bootcampPragma.Stock.Categoria.domain.model.Category;
 import com.bootcampPragma.Stock.Categoria.domain.spi.ICategoryPersistencePort;
-import com.bootcampPragma.Stock.Categoria.domain.utils.PageRequestDomain;
-import com.bootcampPragma.Stock.Categoria.domain.utils.SortDomain;
+import com.bootcampPragma.Stock.Categoria.domain.utils.PageRequestCategory;
+import com.bootcampPragma.Stock.Categoria.domain.utils.SortCategory;
 import com.bootcampPragma.Stock.Categoria.ports.persistency.mysql.mapper.CategoryEntityMapper;
 import com.bootcampPragma.Stock.Categoria.ports.persistency.mysql.repository.ICategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +26,9 @@ public class CategoryAdapter implements ICategoryPersistencePort {
     }
 
     @Override
-    public List<Category> getCategoriesByNombre(SortDomain sortDomain, PageRequestDomain pageRequestDomain) {
+    public List<Category> getCategoriesByNombre(SortCategory sortDomain, PageRequestCategory pageRequestDomain) {
         Sort sort = Sort.by(sortDomain.getProperty());
-        if (sortDomain.getDirection() == SortDomain.Direction.DESC) {
+        if (sortDomain.getDirection() == SortCategory.Direction.DESC) {
             sort = sort.descending();
         } else {
             sort = sort.ascending();

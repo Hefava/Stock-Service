@@ -7,8 +7,8 @@ import com.bootcampPragma.Stock.Categoria.domain.exception.InvalidCategoryNameLe
 import com.bootcampPragma.Stock.Categoria.domain.model.Category;
 import com.bootcampPragma.Stock.Categoria.domain.spi.ICategoryPersistencePort;
 import com.bootcampPragma.Stock.Categoria.domain.utils.CategoriaConstants;
-import com.bootcampPragma.Stock.Categoria.domain.utils.PageRequestDomain;
-import com.bootcampPragma.Stock.Categoria.domain.utils.SortDomain;
+import com.bootcampPragma.Stock.Categoria.domain.utils.PageRequestCategory;
+import com.bootcampPragma.Stock.Categoria.domain.utils.SortCategory;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public List<Category> getCategoriesByNombre(SortDomain sort, PageRequestDomain pageRequest) {
+    public List<Category> getCategoriesByNombre(SortCategory sort, PageRequestCategory pageRequest) {
         return categoryPersistencePort.getCategoriesByNombre(sort, pageRequest);
     }
 }

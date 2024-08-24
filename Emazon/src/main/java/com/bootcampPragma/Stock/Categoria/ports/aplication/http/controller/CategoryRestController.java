@@ -2,8 +2,8 @@ package com.bootcampPragma.Stock.Categoria.ports.aplication.http.controller;
 
 import com.bootcampPragma.Stock.Categoria.domain.api.ICategoryServicePort;
 import com.bootcampPragma.Stock.Categoria.domain.model.Category;
-import com.bootcampPragma.Stock.Categoria.domain.utils.PageRequestDomain;
-import com.bootcampPragma.Stock.Categoria.domain.utils.SortDomain;
+import com.bootcampPragma.Stock.Categoria.domain.utils.PageRequestCategory;
+import com.bootcampPragma.Stock.Categoria.domain.utils.SortCategory;
 import com.bootcampPragma.Stock.Categoria.ports.aplication.http.dto.CategoryRequest;
 import com.bootcampPragma.Stock.Categoria.ports.aplication.http.dto.CategoryResponse;
 import com.bootcampPragma.Stock.Categoria.ports.aplication.http.mapper.CategoryResponseMapper;
@@ -43,7 +43,7 @@ public class CategoryRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Obtener categorías por nombre", description = "Obtiene una lista de categorías ordenadas por nombre y paginadas.")
+    @Operation(summary = "Obtener categorías ordenadas por nombre", description = "Obtiene una lista de categorías ordenadas por nombre y paginadas.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Categorías obtenidas exitosamente"),
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
@@ -54,9 +54,9 @@ public class CategoryRestController {
             @RequestParam(defaultValue = "asc") @Parameter(description = "Orden de clasificación: asc o desc") String order,
             @PageableDefault(size = 5) @Parameter(hidden = true) Pageable pageable) {
 
-        SortDomain.Direction direction = order.equalsIgnoreCase("desc") ? SortDomain.Direction.DESC : SortDomain.Direction.ASC;
-        SortDomain sortDomain = new SortDomain("nombre", direction);
-        PageRequestDomain pageRequestDomain = new PageRequestDomain(pageable.getPageNumber(), pageable.getPageSize());
+        SortCategory.Direction direction = order.equalsIgnoreCase("desc") ? SortCategory.Direction.DESC : SortCategory.Direction.ASC;
+        SortCategory sortDomain = new SortCategory("nombre", direction);
+        PageRequestCategory pageRequestDomain = new PageRequestCategory(pageable.getPageNumber(), pageable.getPageSize());
 
         List<Category> categories = categoryService.getCategoriesByNombre(sortDomain, pageRequestDomain);
         List<CategoryResponse> responses = categoryResponseMapper.toResponseList(categories);

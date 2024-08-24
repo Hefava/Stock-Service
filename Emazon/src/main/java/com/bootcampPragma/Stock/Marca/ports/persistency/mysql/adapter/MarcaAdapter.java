@@ -2,11 +2,16 @@ package com.bootcampPragma.Stock.Marca.ports.persistency.mysql.adapter;
 
 import com.bootcampPragma.Stock.Marca.domain.model.Marca;
 import com.bootcampPragma.Stock.Marca.domain.spi.IMarcaPersistencePort;
+import com.bootcampPragma.Stock.Marca.domain.utils.PageRequestMarca;
+import com.bootcampPragma.Stock.Marca.domain.utils.SortMarca;
 import com.bootcampPragma.Stock.Marca.ports.persistency.mysql.mapper.MarcaEntityMapper;
 import com.bootcampPragma.Stock.Marca.ports.persistency.mysql.repository.IMarcaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -18,6 +23,16 @@ public class MarcaAdapter implements IMarcaPersistencePort {
     @Override
     public void saveMarca(Marca marca) {
         marcaRepository.save(marcaEntityMapper.toEntity(marca));
+    }
+
+    @Override
+    public List<Marca> getMarcasByNombre(SortMarca sortMarca, PageRequestMarca pageRequestMarca) {
+        Sort sort = Sort.by(sortMarca.getProperty());
+        sort = sortMarca.getDirection() == SortMarca.Direction.DESC ? sort.descending() : sort.ascending();
+        PageRequest pageRequest = PageRequest.of(pageRequestMarca.getPage(), pageRequestMarca.getSize(), sort);
+        return marcaRepository.findAll(pageRequest)
+                .map(marcaEntityMapper::toMarca)
+                .toList();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.bootcampPragma.Stock.Categoria.domain.utils;
 
-public class SortDomain {
+public class SortCategory {
     public String getProperty() {
         return property;
     }
@@ -11,7 +11,7 @@ public class SortDomain {
 
     private final String property;
 
-    public SortDomain(String property, Direction direction) {
+    public SortCategory(String property, Direction direction) {
         this.property = property;
         this.direction = direction;
     }

@@ -2,40 +2,37 @@ package com.bootcampPragma.Stock.Categoria.ports.aplication.http.controller;
 
 import com.bootcampPragma.Stock.Categoria.domain.api.ICategoryServicePort;
 import com.bootcampPragma.Stock.Categoria.domain.model.Category;
+import com.bootcampPragma.Stock.Categoria.domain.utils.PageRequestCategory;
+import com.bootcampPragma.Stock.Categoria.domain.utils.SortCategory;
 import com.bootcampPragma.Stock.Categoria.ports.aplication.http.dto.CategoryRequest;
+import com.bootcampPragma.Stock.Categoria.ports.aplication.http.dto.CategoryResponse;
 import com.bootcampPragma.Stock.Categoria.ports.aplication.http.mapper.CategoryResponseMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.*;
 
-@WebMvcTest(CategoryRestController.class)
 class CategoryRestControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private ICategoryServicePort categoryService;
 
-    @MockBean
+    @Mock
     private CategoryResponseMapper categoryResponseMapper;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @InjectMocks
+    private CategoryRestController categoryRestController;
 
     @BeforeEach
     void setUp() {
@@ -43,24 +40,66 @@ class CategoryRestControllerTest {
     }
 
     @Test
-    void saveCategory_ShouldReturnCreatedStatus() throws Exception {
+    void saveCategory_ShouldReturnCreatedStatus() {
         CategoryRequest categoryRequest = new CategoryRequest("Electrónica", "Artículos electrónicos");
-        doNothing().when(categoryService).saveCategory(any(Category.class));
 
-        mockMvc.perform(post("/categoria")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(categoryRequest)))
-                .andExpect(status().isCreated());
+        ResponseEntity<Void> response = categoryRestController.saveCategory(categoryRequest);
+
+        verify(categoryService, times(1)).saveCategory(any(Category.class));
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
-    void getCategoriesByNombre_ShouldReturnOkStatus() throws Exception {
-        when(categoryService.getCategoriesByNombre(any(), any())).thenReturn(Collections.emptyList());
-        when(categoryResponseMapper.toResponseList(any())).thenReturn(Collections.emptyList());
+    void getCategoriesByNombre_ShouldReturnSortedCategories() {
+        Pageable pageable = PageRequest.of(0, 5);
 
-        mockMvc.perform(get("/categoria")
-                        .param("order", "asc"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+        List<Category> categories = List.of(
+                new Category(1L, "Electrónica", "Artículos electrónicos"),
+                new Category(2L, "Ropa", "Artículos de vestir"),
+                new Category(3L, "Juguetes", "Juguetes para niños")
+        );
+
+        List<CategoryResponse> categoryResponses = List.of(
+                new CategoryResponse(1L, "Electrónica", "Artículos electrónicos"),
+                new CategoryResponse(2L, "Ropa", "Artículos de vestir"),
+                new CategoryResponse(3L, "Juguetes", "Juguetes para niños")
+        );
+
+        when(categoryService.getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class))).thenReturn(categories);
+        when(categoryResponseMapper.toResponseList(categories)).thenReturn(categoryResponses);
+
+        ResponseEntity<List<CategoryResponse>> response = categoryRestController.getCategoriesByNombre("asc", pageable);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(categoryResponses, response.getBody());
+        verify(categoryService, times(1)).getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class));
+        verify(categoryResponseMapper, times(1)).toResponseList(categories);
+    }
+
+    @Test
+    void getCategoriesByNombre_ShouldUseDescendingOrderWhenSpecified() {
+        Pageable pageable = PageRequest.of(0, 5);
+
+        List<Category> categories = List.of(
+                new Category(3L, "Juguetes", "Juguetes para niños"),
+                new Category(2L, "Ropa", "Artículos de vestir"),
+                new Category(1L, "Electrónica", "Artículos electrónicos")
+        );
+
+        List<CategoryResponse> categoryResponses = List.of(
+                new CategoryResponse(3L, "Juguetes", "Juguetes para niños"),
+                new CategoryResponse(2L, "Ropa", "Artículos de vestir"),
+                new CategoryResponse(1L, "Electrónica", "Artículos electrónicos")
+        );
+
+        when(categoryService.getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class))).thenReturn(categories);
+        when(categoryResponseMapper.toResponseList(categories)).thenReturn(categoryResponses);
+
+        ResponseEntity<List<CategoryResponse>> response = categoryRestController.getCategoriesByNombre("desc", pageable);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(categoryResponses, response.getBody());
+        verify(categoryService, times(1)).getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class));
+        verify(categoryResponseMapper, times(1)).toResponseList(categories);
     }
 }

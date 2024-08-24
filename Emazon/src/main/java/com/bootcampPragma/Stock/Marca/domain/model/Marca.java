@@ -5,12 +5,6 @@ public class Marca {
     private Long marcaID;
     private String nombre;
 
-    public Marca(Long marcaID, String nombre, String descripcion) {
-        this.marcaID = marcaID;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-    }
-
     public Long getMarcaID() {
         return marcaID;
     }
@@ -32,6 +26,12 @@ public class Marca {
     }
 
     public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Marca(Long marcaID, String nombre, String descripcion) {
+        this.marcaID = marcaID;
+        this.nombre = nombre;
         this.descripcion = descripcion;
     }
 

@@ -7,6 +7,10 @@ import com.bootcampPragma.Stock.Marca.domain.exception.MarcaAlreadyExistsExcepti
 import com.bootcampPragma.Stock.Marca.domain.model.Marca;
 import com.bootcampPragma.Stock.Marca.domain.spi.IMarcaPersistencePort;
 import com.bootcampPragma.Stock.Marca.domain.utils.MarcaConstants;
+import com.bootcampPragma.Stock.Marca.domain.utils.PageRequestMarca;
+import com.bootcampPragma.Stock.Marca.domain.utils.SortMarca;
+
+import java.util.List;
 
 public class MarcaUseCase implements IMarcaServicePort {
     private final IMarcaPersistencePort marcaPersistencePort;
@@ -27,5 +31,10 @@ public class MarcaUseCase implements IMarcaServicePort {
             throw new InvalidMarcaDescriptionLengthException();
         }
         marcaPersistencePort.saveMarca(marca);
+    }
+
+    @Override
+    public List<Marca> getMarcasByNombre(SortMarca sort, PageRequestMarca pageRequest) {
+        return marcaPersistencePort.getMarcasByNombre(sort, pageRequest);
     }
 }
