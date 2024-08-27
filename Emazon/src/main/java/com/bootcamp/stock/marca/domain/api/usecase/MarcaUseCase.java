@@ -1,5 +1,6 @@
 package com.bootcamp.stock.marca.domain.api.usecase;
 
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import com.bootcamp.stock.marca.domain.api.IMarcaServicePort;
 import com.bootcamp.stock.marca.domain.exception.InvalidMarcaDescriptionLengthException;
 import com.bootcamp.stock.marca.domain.exception.InvalidMarcaNameLengthException;
@@ -9,8 +10,6 @@ import com.bootcamp.stock.marca.domain.spi.IMarcaPersistencePort;
 import com.bootcamp.stock.marca.domain.utils.MarcaConstants;
 import com.bootcamp.stock.marca.domain.utils.PageRequestMarca;
 import com.bootcamp.stock.marca.domain.utils.SortMarca;
-
-import java.util.List;
 
 public class MarcaUseCase implements IMarcaServicePort {
     private final IMarcaPersistencePort marcaPersistencePort;
@@ -34,7 +33,8 @@ public class MarcaUseCase implements IMarcaServicePort {
     }
 
     @Override
-    public List<Marca> getMarcasByNombre(SortMarca sort, PageRequestMarca pageRequest) {
+    public PagedResult<Marca> getMarcasByNombre(SortMarca sort, PageRequestMarca pageRequest) {
         return marcaPersistencePort.getMarcasByNombre(sort, pageRequest);
     }
+
 }
