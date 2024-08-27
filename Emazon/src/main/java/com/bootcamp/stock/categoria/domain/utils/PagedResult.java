@@ -1,6 +1,7 @@
 package com.bootcamp.stock.categoria.domain.utils;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PagedResult<T> {
     private final List<T> content;
@@ -35,5 +36,22 @@ public class PagedResult<T> {
 
     public long getTotalCount() {
         return totalCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PagedResult<?> that = (PagedResult<?>) o;
+        return page == that.page &&
+                pageSize == that.pageSize &&
+                totalPages == that.totalPages &&
+                totalCount == that.totalCount &&
+                Objects.equals(content, that.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(content, page, pageSize, totalPages, totalCount);
     }
 }

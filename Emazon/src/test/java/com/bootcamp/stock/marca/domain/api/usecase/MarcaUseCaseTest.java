@@ -1,5 +1,6 @@
 package com.bootcamp.stock.marca.domain.api.usecase;
 
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import com.bootcamp.stock.marca.domain.exception.InvalidMarcaDescriptionLengthException;
 import com.bootcamp.stock.marca.domain.exception.InvalidMarcaNameLengthException;
 import com.bootcamp.stock.marca.domain.exception.MarcaAlreadyExistsException;
@@ -39,7 +40,7 @@ class MarcaUseCaseTest {
         when(marcaPersistencePort.findByNombre(marca.getNombre())).thenReturn(Optional.of(marca));
 
         assertThrows(MarcaAlreadyExistsException.class, () -> marcaUseCase.saveMarca(marca));
-        verify(marcaPersistencePort, times(0)).saveMarca(any(Marca.class));
+        verify(marcaPersistencePort, never()).saveMarca(any(Marca.class));
     }
 
     @Test
@@ -48,7 +49,7 @@ class MarcaUseCaseTest {
         Marca marca = new Marca(null, longName, "Ropa deportiva");
 
         assertThrows(InvalidMarcaNameLengthException.class, () -> marcaUseCase.saveMarca(marca));
-        verify(marcaPersistencePort, times(0)).saveMarca(any(Marca.class));
+        verify(marcaPersistencePort, never()).saveMarca(any(Marca.class));
     }
 
     @Test
@@ -57,7 +58,7 @@ class MarcaUseCaseTest {
         Marca marca = new Marca(null, "Nike", longDescription);
 
         assertThrows(InvalidMarcaDescriptionLengthException.class, () -> marcaUseCase.saveMarca(marca));
-        verify(marcaPersistencePort, times(0)).saveMarca(any(Marca.class));
+        verify(marcaPersistencePort, never()).saveMarca(any(Marca.class));
     }
 
     @Test
@@ -66,7 +67,7 @@ class MarcaUseCaseTest {
         when(marcaPersistencePort.findByNombre(marca.getNombre())).thenReturn(Optional.empty());
 
         marcaUseCase.saveMarca(marca);
-        verify(marcaPersistencePort, times(1)).saveMarca(marca);
+        verify(marcaPersistencePort).saveMarca(marca);
     }
 
     @Test
@@ -80,12 +81,12 @@ class MarcaUseCaseTest {
         SortMarca sort = new SortMarca("nombre", SortMarca.Direction.ASC);
         PageRequestMarca pageRequest = new PageRequestMarca(0, 3);
 
-        when(marcaPersistencePort.getMarcasByNombre(sort, pageRequest)).thenReturn(marcas);
+        when(marcaPersistencePort.getMarcasByNombre(sort, pageRequest)).thenReturn(new PagedResult<>(marcas, 0, 3, 1, 3));
 
-        List<Marca> result = marcaUseCase.getMarcasByNombre(sort, pageRequest);
+        PagedResult<Marca> result = marcaUseCase.getMarcasByNombre(sort, pageRequest);
 
-        assertEquals(3, result.size());
-        assertEquals("Adidas", result.get(0).getNombre());
-        verify(marcaPersistencePort, times(1)).getMarcasByNombre(sort, pageRequest);
+        assertEquals(3, result.getContent().size());
+        assertEquals("Adidas", result.getContent().get(0).getNombre());
+        verify(marcaPersistencePort).getMarcasByNombre(sort, pageRequest);
     }
 }
