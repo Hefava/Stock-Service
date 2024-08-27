@@ -8,9 +8,8 @@ import com.bootcamp.stock.categoria.domain.model.Category;
 import com.bootcamp.stock.categoria.domain.spi.ICategoryPersistencePort;
 import com.bootcamp.stock.categoria.domain.utils.CategoriaConstants;
 import com.bootcamp.stock.categoria.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import com.bootcamp.stock.categoria.domain.utils.SortCategory;
-
-import java.util.List;
 
 public class CategoryUseCase implements ICategoryServicePort {
     private final ICategoryPersistencePort categoryPersistencePort;
@@ -34,7 +33,7 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public List<Category> getCategoriesByNombre(SortCategory sort, PageRequestCategory pageRequest) {
+    public PagedResult<Category> getCategoriesByNombre(SortCategory sort, PageRequestCategory pageRequest) {
         return categoryPersistencePort.getCategoriesByNombre(sort, pageRequest);
     }
 }

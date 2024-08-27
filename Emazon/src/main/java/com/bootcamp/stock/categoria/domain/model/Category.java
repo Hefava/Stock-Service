@@ -1,10 +1,6 @@
 package com.bootcamp.stock.categoria.domain.model;
 
 public class Category {
-
-    private Long categoryID;
-    private String nombre;
-
     public Long getCategoryID() {
         return categoryID;
     }
@@ -35,5 +31,7 @@ public class Category {
         this.descripcion = descripcion;
     }
 
+    private Long categoryID;
+    private String nombre;
     private String descripcion;
 }
