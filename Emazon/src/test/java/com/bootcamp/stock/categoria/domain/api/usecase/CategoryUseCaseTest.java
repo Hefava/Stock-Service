@@ -17,7 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class CategoryUseCaseTest {
@@ -35,43 +37,59 @@ class CategoryUseCaseTest {
 
     @Test
     void saveCategory_WhenCategoryAlreadyExists_ShouldThrowCategoryAlreadyExistsException() {
+        // Arrange
         Category category = new Category(null, "Electrónica", "Artículos electrónicos");
         when(categoryPersistencePort.findByNombre(category.getNombre())).thenReturn(Optional.of(category));
 
+        // Act & Assert
         assertThrows(CategoryAlreadyExistsException.class, () -> categoryUseCase.saveCategory(category));
-        verify(categoryPersistencePort, times(0)).saveCategory(any(Category.class));
+
+        // Verify
+        verify(categoryPersistencePort, never()).saveCategory(any(Category.class));
     }
 
     @Test
     void saveCategory_WhenCategoryNameTooLong_ShouldThrowInvalidCategoryNameLengthException() {
+        // Arrange
         String longName = "A".repeat(51);
         Category category = new Category(null, longName, "Artículos electrónicos");
 
+        // Act & Assert
         assertThrows(InvalidCategoryNameLengthException.class, () -> categoryUseCase.saveCategory(category));
-        verify(categoryPersistencePort, times(0)).saveCategory(any(Category.class));
+
+        // Verify
+        verify(categoryPersistencePort, never()).saveCategory(any(Category.class));
     }
 
     @Test
     void saveCategory_WhenCategoryDescriptionTooLong_ShouldThrowInvalidCategoryDescriptionLengthException() {
+        // Arrange
         String longDescription = "B".repeat(91);
         Category category = new Category(null, "Electrónica", longDescription);
 
+        // Act & Assert
         assertThrows(InvalidCategoryDescriptionLengthException.class, () -> categoryUseCase.saveCategory(category));
-        verify(categoryPersistencePort, times(0)).saveCategory(any(Category.class));
+
+        // Verify
+        verify(categoryPersistencePort, never()).saveCategory(any(Category.class));
     }
 
     @Test
     void saveCategory_WhenValidCategory_ShouldSaveCategorySuccessfully() {
+        // Arrange
         Category category = new Category(null, "Electrónica", "Artículos electrónicos");
         when(categoryPersistencePort.findByNombre(category.getNombre())).thenReturn(Optional.empty());
 
+        // Act
         categoryUseCase.saveCategory(category);
 
-        verify(categoryPersistencePort, times(1)).saveCategory(category);
+        // Verify
+        verify(categoryPersistencePort).saveCategory(category);
     }
 
     @Test
     void getCategoriesByNombre_ShouldReturnSortedCategories() {
+        // Arrange
         Category category1 = new Category(1L, "Electrónica", "Artículos electrónicos");
         Category category2 = new Category(2L, "Libros", "Diferentes géneros de libros");
         List<Category> expectedCategories = Arrays.asList(category1, category2);
@@ -81,9 +99,13 @@ class CategoryUseCaseTest {
 
         when(categoryPersistencePort.getCategoriesByNombre(sort, pageRequest)).thenReturn(expectedCategories);
 
+        // Act
         List<Category> result = categoryUseCase.getCategoriesByNombre(sort, pageRequest);
 
+        // Assert
         assertEquals(expectedCategories, result);
-        verify(categoryPersistencePort, times(1)).getCategoriesByNombre(sort, pageRequest);
+
+        // Verify
+        verify(categoryPersistencePort).getCategoriesByNombre(sort, pageRequest);
     }
 }
