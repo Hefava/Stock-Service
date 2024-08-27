@@ -4,6 +4,7 @@ public class Marca {
 
     private Long marcaID;
     private String nombre;
+    private String descripcion;
 
     public Long getMarcaID() {
         return marcaID;
@@ -34,6 +35,4 @@ public class Marca {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
-
-    private String descripcion;
 }

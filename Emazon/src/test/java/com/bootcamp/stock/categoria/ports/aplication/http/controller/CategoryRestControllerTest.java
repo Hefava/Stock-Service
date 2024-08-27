@@ -3,6 +3,7 @@ package com.bootcamp.stock.categoria.ports.aplication.http.controller;
 import com.bootcamp.stock.categoria.domain.api.ICategoryServicePort;
 import com.bootcamp.stock.categoria.domain.model.Category;
 import com.bootcamp.stock.categoria.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import com.bootcamp.stock.categoria.domain.utils.SortCategory;
 import com.bootcamp.stock.categoria.ports.aplication.http.dto.CategoryRequest;
 import com.bootcamp.stock.categoria.ports.aplication.http.dto.CategoryResponse;
@@ -50,14 +51,14 @@ class CategoryRestControllerTest {
     }
 
     @Test
-    void getCategoriesByNombre_ShouldReturnSortedCategories() {
+    void getCategoriesByNombre_ShouldReturnPagedCategories() {
         Pageable pageable = PageRequest.of(0, 5);
 
-        List<Category> categories = List.of(
-                new Category(1L, "Electrónica", "Artículos electrónicos"),
-                new Category(2L, "Ropa", "Artículos de vestir"),
-                new Category(3L, "Juguetes", "Juguetes para niños")
-        );
+        Category category1 = new Category(1L, "Electrónica", "Artículos electrónicos");
+        Category category2 = new Category(2L, "Ropa", "Artículos de vestir");
+        Category category3 = new Category(3L, "Juguetes", "Juguetes para niños");
+
+        List<Category> categories = List.of(category1, category2, category3);
 
         List<CategoryResponse> categoryResponses = List.of(
                 new CategoryResponse(1L, "Electrónica", "Artículos electrónicos"),
@@ -65,13 +66,18 @@ class CategoryRestControllerTest {
                 new CategoryResponse(3L, "Juguetes", "Juguetes para niños")
         );
 
-        when(categoryService.getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class))).thenReturn(categories);
+        PagedResult<Category> pagedResult = new PagedResult<>(categories, 0, 5, 1, 3);
+        PagedResult<CategoryResponse> expectedPagedResult = new PagedResult<>(
+                categoryResponses, 0, 5, 1, 3);
+
+        when(categoryService.getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class)))
+                .thenReturn(pagedResult);
         when(categoryResponseMapper.toResponseList(categories)).thenReturn(categoryResponses);
 
-        ResponseEntity<List<CategoryResponse>> response = categoryRestController.getCategoriesByNombre("asc", pageable);
+        ResponseEntity<PagedResult<CategoryResponse>> response = categoryRestController.getCategoriesByNombre("asc", pageable);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(categoryResponses, response.getBody());
+        assertEquals(expectedPagedResult, response.getBody());
         verify(categoryService, times(1)).getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class));
         verify(categoryResponseMapper, times(1)).toResponseList(categories);
     }
@@ -80,11 +86,11 @@ class CategoryRestControllerTest {
     void getCategoriesByNombre_ShouldUseDescendingOrderWhenSpecified() {
         Pageable pageable = PageRequest.of(0, 5);
 
-        List<Category> categories = List.of(
-                new Category(3L, "Juguetes", "Juguetes para niños"),
-                new Category(2L, "Ropa", "Artículos de vestir"),
-                new Category(1L, "Electrónica", "Artículos electrónicos")
-        );
+        Category category1 = new Category(1L, "Electrónica", "Artículos electrónicos");
+        Category category2 = new Category(2L, "Ropa", "Artículos de vestir");
+        Category category3 = new Category(3L, "Juguetes", "Juguetes para niños");
+
+        List<Category> categories = List.of(category3, category2, category1);
 
         List<CategoryResponse> categoryResponses = List.of(
                 new CategoryResponse(3L, "Juguetes", "Juguetes para niños"),
@@ -92,13 +98,18 @@ class CategoryRestControllerTest {
                 new CategoryResponse(1L, "Electrónica", "Artículos electrónicos")
         );
 
-        when(categoryService.getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class))).thenReturn(categories);
+        PagedResult<Category> pagedResult = new PagedResult<>(categories, 0, 5, 1, 3);
+        PagedResult<CategoryResponse> expectedPagedResult = new PagedResult<>(
+                categoryResponses, 0, 5, 1, 3);
+
+        when(categoryService.getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class)))
+                .thenReturn(pagedResult);
         when(categoryResponseMapper.toResponseList(categories)).thenReturn(categoryResponses);
 
-        ResponseEntity<List<CategoryResponse>> response = categoryRestController.getCategoriesByNombre("desc", pageable);
+        ResponseEntity<PagedResult<CategoryResponse>> response = categoryRestController.getCategoriesByNombre("desc", pageable);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(categoryResponses, response.getBody());
+        assertEquals(expectedPagedResult, response.getBody());
         verify(categoryService, times(1)).getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class));
         verify(categoryResponseMapper, times(1)).toResponseList(categories);
     }

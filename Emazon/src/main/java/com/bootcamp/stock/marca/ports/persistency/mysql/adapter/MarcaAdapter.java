@@ -1,5 +1,6 @@
 package com.bootcamp.stock.marca.ports.persistency.mysql.adapter;
 
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import com.bootcamp.stock.marca.domain.model.Marca;
 import com.bootcamp.stock.marca.domain.spi.IMarcaPersistencePort;
 import com.bootcamp.stock.marca.domain.utils.PageRequestMarca;
@@ -26,13 +27,32 @@ public class MarcaAdapter implements IMarcaPersistencePort {
     }
 
     @Override
-    public List<Marca> getMarcasByNombre(SortMarca sortMarca, PageRequestMarca pageRequestMarca) {
-        Sort sort = Sort.by(sortMarca.getProperty());
-        sort = sortMarca.getDirection() == SortMarca.Direction.DESC ? sort.descending() : sort.ascending();
-        PageRequest pageRequest = PageRequest.of(pageRequestMarca.getPage(), pageRequestMarca.getSize(), sort);
-        return marcaRepository.findAll(pageRequest)
+    public PagedResult<Marca> getMarcasByNombre(SortMarca sortDomain, PageRequestMarca pageRequestDomain) {
+        Sort sort = Sort.by(sortDomain.getProperty());
+        if (sortDomain.getDirection() == SortMarca.Direction.DESC) {
+            sort = sort.descending();
+        } else {
+            sort = sort.ascending();
+        }
+
+        org.springframework.data.domain.PageRequest pageRequest = PageRequest.of(
+                pageRequestDomain.getPage(),
+                pageRequestDomain.getSize(),
+                sort
+        );
+
+        var page = marcaRepository.findAll(pageRequest);
+        List<Marca> content = page.getContent().stream()
                 .map(marcaEntityMapper::toMarca)
                 .toList();
+
+        return new PagedResult<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalPages(),
+                page.getTotalElements()
+        );
     }
 
     @Override

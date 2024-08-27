@@ -5,7 +5,9 @@ import com.bootcamp.stock.categoria.domain.exception.InvalidCategoryDescriptionL
 import com.bootcamp.stock.categoria.domain.exception.InvalidCategoryNameLengthException;
 import com.bootcamp.stock.categoria.domain.model.Category;
 import com.bootcamp.stock.categoria.domain.spi.ICategoryPersistencePort;
+import com.bootcamp.stock.categoria.domain.utils.CategoriaConstants;
 import com.bootcamp.stock.categoria.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import com.bootcamp.stock.categoria.domain.utils.SortCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class CategoryUseCaseTest {
@@ -39,25 +43,25 @@ class CategoryUseCaseTest {
         when(categoryPersistencePort.findByNombre(category.getNombre())).thenReturn(Optional.of(category));
 
         assertThrows(CategoryAlreadyExistsException.class, () -> categoryUseCase.saveCategory(category));
-        verify(categoryPersistencePort, times(0)).saveCategory(any(Category.class));
+        verify(categoryPersistencePort, never()).saveCategory(any(Category.class));
     }
 
     @Test
     void saveCategory_WhenCategoryNameTooLong_ShouldThrowInvalidCategoryNameLengthException() {
-        String longName = "A".repeat(51);
+        String longName = "A".repeat(CategoriaConstants.MAX_NOMBRE_LENGTH.getValue() + 1);
         Category category = new Category(null, longName, "Artículos electrónicos");
 
         assertThrows(InvalidCategoryNameLengthException.class, () -> categoryUseCase.saveCategory(category));
-        verify(categoryPersistencePort, times(0)).saveCategory(any(Category.class));
+        verify(categoryPersistencePort, never()).saveCategory(any(Category.class));
     }
 
     @Test
     void saveCategory_WhenCategoryDescriptionTooLong_ShouldThrowInvalidCategoryDescriptionLengthException() {
-        String longDescription = "B".repeat(91);
+        String longDescription = "B".repeat(CategoriaConstants.MAX_DESCRIPCION_LENGTH.getValue() + 1);
         Category category = new Category(null, "Electrónica", longDescription);
 
         assertThrows(InvalidCategoryDescriptionLengthException.class, () -> categoryUseCase.saveCategory(category));
-        verify(categoryPersistencePort, times(0)).saveCategory(any(Category.class));
+        verify(categoryPersistencePort, never()).saveCategory(any(Category.class));
     }
 
     @Test
@@ -66,8 +70,7 @@ class CategoryUseCaseTest {
         when(categoryPersistencePort.findByNombre(category.getNombre())).thenReturn(Optional.empty());
 
         categoryUseCase.saveCategory(category);
-
-        verify(categoryPersistencePort, times(1)).saveCategory(category);
+        verify(categoryPersistencePort).saveCategory(category);
     }
 
     @Test
@@ -79,11 +82,13 @@ class CategoryUseCaseTest {
         SortCategory sort = new SortCategory("nombre", SortCategory.Direction.ASC);
         PageRequestCategory pageRequest = new PageRequestCategory(0, 10);
 
-        when(categoryPersistencePort.getCategoriesByNombre(sort, pageRequest)).thenReturn(expectedCategories);
+        PagedResult<Category> pagedResult = new PagedResult<>(expectedCategories, 2, 0, 10, 2);
 
-        List<Category> result = categoryUseCase.getCategoriesByNombre(sort, pageRequest);
+        when(categoryPersistencePort.getCategoriesByNombre(sort, pageRequest)).thenReturn(pagedResult);
 
-        assertEquals(expectedCategories, result);
-        verify(categoryPersistencePort, times(1)).getCategoriesByNombre(sort, pageRequest);
+        PagedResult<Category> result = categoryUseCase.getCategoriesByNombre(sort, pageRequest);
+
+        assertEquals(pagedResult, result);
+        verify(categoryPersistencePort).getCategoriesByNombre(sort, pageRequest);
     }
 }

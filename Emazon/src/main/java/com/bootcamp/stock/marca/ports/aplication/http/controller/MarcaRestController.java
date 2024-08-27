@@ -1,5 +1,6 @@
 package com.bootcamp.stock.marca.ports.aplication.http.controller;
 
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import com.bootcamp.stock.marca.domain.api.IMarcaServicePort;
 import com.bootcamp.stock.marca.domain.model.Marca;
 import com.bootcamp.stock.marca.domain.utils.PageRequestMarca;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/marca")
@@ -45,17 +45,23 @@ public class MarcaRestController {
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
     })
     @GetMapping
-    public ResponseEntity<List<MarcaResponse>> getMarcasByNombre(
-            @RequestParam(defaultValue = "asc") @Parameter(description = "Orden de clasificación: asc o desc") String order,
+    public ResponseEntity<PagedResult<MarcaResponse>> getMarcasByNombre(
+            @RequestParam(defaultValue = "asc") @Parameter(description = "Sort order: asc or desc") String order,
             @PageableDefault(size = 5) @Parameter(hidden = true) Pageable pageable) {
 
         SortMarca.Direction direction = order.equalsIgnoreCase("desc") ? SortMarca.Direction.DESC : SortMarca.Direction.ASC;
         SortMarca sortDomain = new SortMarca("nombre", direction);
         PageRequestMarca pageRequestDomain = new PageRequestMarca(pageable.getPageNumber(), pageable.getPageSize());
 
-        List<Marca> marcas = marcaService.getMarcasByNombre(sortDomain, pageRequestDomain);
-        List<MarcaResponse> responses = marcaResponseMapper.toResponseList(marcas);
-        return ResponseEntity.ok(responses);
+        PagedResult<Marca> result = marcaService.getMarcasByNombre(sortDomain, pageRequestDomain);
+        PagedResult<MarcaResponse> response = new PagedResult<>(
+                marcaResponseMapper.toResponseList(result.getContent()),
+                result.getPage(),
+                result.getPageSize(),
+                result.getTotalPages(),
+                result.getTotalCount()
+        );
+
+        return ResponseEntity.ok(response);
     }
 }
-

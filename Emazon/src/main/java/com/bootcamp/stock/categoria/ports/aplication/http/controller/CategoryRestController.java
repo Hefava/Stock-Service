@@ -3,6 +3,7 @@ package com.bootcamp.stock.categoria.ports.aplication.http.controller;
 import com.bootcamp.stock.categoria.domain.api.ICategoryServicePort;
 import com.bootcamp.stock.categoria.domain.model.Category;
 import com.bootcamp.stock.categoria.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import com.bootcamp.stock.categoria.domain.utils.SortCategory;
 import com.bootcamp.stock.categoria.ports.aplication.http.dto.CategoryRequest;
 import com.bootcamp.stock.categoria.ports.aplication.http.dto.CategoryResponse;
@@ -19,8 +20,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/categoria")
@@ -50,16 +49,23 @@ public class CategoryRestController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
     })
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getCategoriesByNombre(
-            @RequestParam(defaultValue = "asc") @Parameter(description = "Orden de clasificación: asc o desc") String order,
+    public ResponseEntity<PagedResult<CategoryResponse>> getCategoriesByNombre(
+            @RequestParam(defaultValue = "asc") @Parameter(description = "Sort order: asc or desc") String order,
             @PageableDefault(size = 5) @Parameter(hidden = true) Pageable pageable) {
 
         SortCategory.Direction direction = order.equalsIgnoreCase("desc") ? SortCategory.Direction.DESC : SortCategory.Direction.ASC;
         SortCategory sortDomain = new SortCategory("nombre", direction);
         PageRequestCategory pageRequestDomain = new PageRequestCategory(pageable.getPageNumber(), pageable.getPageSize());
 
-        List<Category> categories = categoryService.getCategoriesByNombre(sortDomain, pageRequestDomain);
-        List<CategoryResponse> responses = categoryResponseMapper.toResponseList(categories);
-        return ResponseEntity.ok(responses);
+        PagedResult<Category> result = categoryService.getCategoriesByNombre(sortDomain, pageRequestDomain);
+        PagedResult<CategoryResponse> response = new PagedResult<>(
+                categoryResponseMapper.toResponseList(result.getContent()),
+                result.getPage(),
+                result.getPageSize(),
+                result.getTotalPages(),
+                result.getTotalCount()
+        );
+
+        return ResponseEntity.ok(response);
     }
 }
