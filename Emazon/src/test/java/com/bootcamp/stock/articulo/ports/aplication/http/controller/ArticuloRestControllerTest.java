@@ -2,20 +2,28 @@ package com.bootcamp.stock.articulo.ports.aplication.http.controller;
 
 import com.bootcamp.stock.articulo.domain.api.IArticuloServicePort;
 import com.bootcamp.stock.articulo.domain.model.Articulo;
+import com.bootcamp.stock.articulo.domain.utils.PageRequestArticulo;
+import com.bootcamp.stock.articulo.domain.utils.SortArticulo;
 import com.bootcamp.stock.articulo.ports.aplication.http.dto.ArticuloRequest;
+import com.bootcamp.stock.articulo.ports.aplication.http.dto.ArticuloResponse;
 import com.bootcamp.stock.articulo.ports.aplication.http.mapper.ArticuloRequestMapper;
 import com.bootcamp.stock.articulo.ports.aplication.http.mapper.ArticuloResponseMapper;
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class ArticuloRestControllerTest {
@@ -38,37 +46,143 @@ class ArticuloRestControllerTest {
     }
 
     @Test
-    void saveArticulo_ShouldReturnCreatedStatus_WhenArticuloIsValid() {
+    void testSaveArticulo() {
         // Arrange
         ArticuloRequest articuloRequest = new ArticuloRequest();
-        Articulo articulo = new Articulo(1L, "Laptop", "Gaming Laptop", 5L, 1200.0, new HashSet<>(), null);
-
+        Articulo articulo = new Articulo();
         when(articuloRequestMapper.toArticulo(articuloRequest)).thenReturn(articulo);
 
         // Act
-        ResponseEntity<Void> response = articuloRestController.saveArticulo(articuloRequest);
+        ResponseEntity<Void> responseEntity = articuloRestController.saveArticulo(articuloRequest);
 
         // Assert
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(articuloService, times(1)).saveArticulo(articulo);
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
     }
 
     @Test
-    void saveArticulo_ShouldHandleException_WhenServiceThrowsException() {
+    void testGetArticulosSortedByArticuloNameAsc() {
         // Arrange
-        ArticuloRequest articuloRequest = new ArticuloRequest();
-        Articulo articulo = new Articulo(1L, "Laptop", "Gaming Laptop", 5L, 1200.0, new HashSet<>(), null);
+        List<Articulo> articulos = Collections.singletonList(new Articulo());
+        PagedResult<Articulo> pagedResult = new PagedResult<>(articulos, 0, 10, 1, 1L);
 
-        when(articuloRequestMapper.toArticulo(articuloRequest)).thenReturn(articulo);
-        doThrow(new RuntimeException("Internal Server Error")).when(articuloService).saveArticulo(articulo);
+        when(articuloService.getArticulos(any(SortArticulo.class), any(PageRequestArticulo.class)))
+                .thenReturn(pagedResult);
+
+        ArticuloResponse articuloResponse = new ArticuloResponse();
+        when(articuloResponseMapper.toResponse(any(Articulo.class))).thenReturn(articuloResponse);
 
         // Act & Assert
-        try {
-            articuloRestController.saveArticulo(articuloRequest);
-        } catch (RuntimeException e) {
-            assertEquals("Internal Server Error", e.getMessage());
-        }
+        var responseEntity = articuloRestController.getArticulos("nombre", "asc", PageRequest.of(0, 10));
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().getContent().size());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(articuloService, times(1)).getArticulos(any(SortArticulo.class), any(PageRequestArticulo.class));
+        verify(articuloResponseMapper, times(1)).toResponse(any(Articulo.class));
+    }
 
-        verify(articuloService, times(1)).saveArticulo(articulo);
+    @Test
+    void testGetArticulosSortedByArticuloNameDesc() {
+        // Arrange
+        List<Articulo> articulos = Collections.singletonList(new Articulo());
+        PagedResult<Articulo> pagedResult = new PagedResult<>(articulos, 0, 20, 1, 1L);
+
+        when(articuloService.getArticulos(any(SortArticulo.class), any(PageRequestArticulo.class)))
+                .thenReturn(pagedResult);
+
+        ArticuloResponse articuloResponse = new ArticuloResponse();
+        when(articuloResponseMapper.toResponse(any(Articulo.class))).thenReturn(articuloResponse);
+
+        // Act & Assert
+        var responseEntity = articuloRestController.getArticulos("nombre", "desc", PageRequest.of(0, 20));
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().getContent().size());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(articuloService, times(1)).getArticulos(any(SortArticulo.class), any(PageRequestArticulo.class));
+        verify(articuloResponseMapper, times(1)).toResponse(any(Articulo.class));
+    }
+
+    @Test
+    void testGetArticulosSortedByMarcaNameAsc() {
+        // Arrange
+        List<Articulo> articulos = Collections.singletonList(new Articulo());
+        PagedResult<Articulo> pagedResult = new PagedResult<>(articulos, 0, 10, 1, 1L);
+
+        when(articuloService.getArticulos(any(SortArticulo.class), any(PageRequestArticulo.class)))
+                .thenReturn(pagedResult);
+
+        ArticuloResponse articuloResponse = new ArticuloResponse();
+        when(articuloResponseMapper.toResponse(any(Articulo.class))).thenReturn(articuloResponse);
+
+        // Act & Assert
+        var responseEntity = articuloRestController.getArticulos("marcaNombre", "asc", PageRequest.of(0, 10));
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().getContent().size());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(articuloService, times(1)).getArticulos(any(SortArticulo.class), any(PageRequestArticulo.class));
+        verify(articuloResponseMapper, times(1)).toResponse(any(Articulo.class));
+    }
+
+    @Test
+    void testGetArticulosSortedByMarcaNameDesc() {
+        // Arrange
+        List<Articulo> articulos = Collections.singletonList(new Articulo());
+        PagedResult<Articulo> pagedResult = new PagedResult<>(articulos, 0, 20, 1, 1L);
+
+        when(articuloService.getArticulos(any(SortArticulo.class), any(PageRequestArticulo.class)))
+                .thenReturn(pagedResult);
+
+        ArticuloResponse articuloResponse = new ArticuloResponse();
+        when(articuloResponseMapper.toResponse(any(Articulo.class))).thenReturn(articuloResponse);
+
+        // Act & Assert
+        var responseEntity = articuloRestController.getArticulos("marcaNombre", "desc", PageRequest.of(0, 20));
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().getContent().size());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(articuloService, times(1)).getArticulos(any(SortArticulo.class), any(PageRequestArticulo.class));
+        verify(articuloResponseMapper, times(1)).toResponse(any(Articulo.class));
+    }
+
+    @Test
+    void testGetArticulosSortedByCategoriaNameAsc() {
+        // Arrange
+        List<Articulo> articulos = Collections.singletonList(new Articulo());
+        PagedResult<Articulo> pagedResult = new PagedResult<>(articulos, 0, 10, 1, 1L);
+
+        when(articuloService.findAllOrderByCategoriaNombre(any(SortArticulo.class), any(PageRequestArticulo.class)))
+                .thenReturn(pagedResult);
+
+        ArticuloResponse articuloResponse = new ArticuloResponse();
+        when(articuloResponseMapper.toResponse(any(Articulo.class))).thenReturn(articuloResponse);
+
+        // Act & Assert
+        var responseEntity = articuloRestController.getArticulos("categoriaNombre", "asc", PageRequest.of(0, 10));
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().getContent().size());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(articuloService, times(1)).findAllOrderByCategoriaNombre(any(SortArticulo.class), any(PageRequestArticulo.class));
+        verify(articuloResponseMapper, times(1)).toResponse(any(Articulo.class));
+    }
+
+    @Test
+    void testGetArticulosSortedByCategoriaNameDesc() {
+        // Arrange
+        List<Articulo> articulos = Collections.singletonList(new Articulo());
+        PagedResult<Articulo> pagedResult = new PagedResult<>(articulos, 0, 20, 1, 1L);
+
+        when(articuloService.findAllOrderByCategoriaNombre(any(SortArticulo.class), any(PageRequestArticulo.class)))
+                .thenReturn(pagedResult);
+
+        ArticuloResponse articuloResponse = new ArticuloResponse();
+        when(articuloResponseMapper.toResponse(any(Articulo.class))).thenReturn(articuloResponse);
+
+        // Act & Assert
+        var responseEntity = articuloRestController.getArticulos("categoriaNombre", "desc", PageRequest.of(0, 20));
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().getContent().size());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(articuloService, times(1)).findAllOrderByCategoriaNombre(any(SortArticulo.class), any(PageRequestArticulo.class));
+        verify(articuloResponseMapper, times(1)).toResponse(any(Articulo.class));
     }
 }

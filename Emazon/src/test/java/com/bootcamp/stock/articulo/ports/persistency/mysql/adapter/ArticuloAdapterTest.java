@@ -1,16 +1,23 @@
 package com.bootcamp.stock.articulo.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.articulo.domain.model.Articulo;
+import com.bootcamp.stock.articulo.domain.utils.PageRequestArticulo;
+import com.bootcamp.stock.articulo.domain.utils.SortArticulo;
 import com.bootcamp.stock.articulo.ports.persistency.mysql.entity.ArticuloEntity;
 import com.bootcamp.stock.articulo.ports.persistency.mysql.mapper.ArticuloEntityMapper;
 import com.bootcamp.stock.articulo.ports.persistency.mysql.repository.IArticuloRepository;
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -67,5 +74,62 @@ class ArticuloAdapterTest {
         Optional<Articulo> result = articuloAdapter.findByNombre("Laptop");
 
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void getArticulos_ShouldReturnPagedResult() {
+        SortArticulo sortDomain = new SortArticulo("nombre", SortArticulo.Direction.ASC);
+        PageRequestArticulo pageRequestDomain = new PageRequestArticulo(0, 10);
+
+        Sort sort = Sort.by(sortDomain.getProperty());
+        if (sortDomain.getDirection() == SortArticulo.Direction.DESC) {
+            sort = sort.descending();
+        } else {
+            sort = sort.ascending();
+        }
+
+        PageRequest pageRequest = PageRequest.of(pageRequestDomain.getPage(), pageRequestDomain.getSize(), sort);
+        Page<ArticuloEntity> page = mock(Page.class);
+
+        when(articuloRepository.findAll(pageRequest)).thenReturn(page);
+        when(page.getContent()).thenReturn(List.of(articuloEntity));
+        when(page.getNumber()).thenReturn(0);
+        when(page.getSize()).thenReturn(10);
+        when(page.getTotalPages()).thenReturn(1);
+        when(page.getTotalElements()).thenReturn(1L);
+        when(articuloEntityMapper.toArticulo(any(ArticuloEntity.class))).thenReturn(articulo);
+
+        PagedResult<Articulo> result = articuloAdapter.getArticulos(sortDomain, pageRequestDomain);
+
+        assertEquals(1, result.getContent().size());
+        assertEquals(0, result.getPage());
+        assertEquals(10, result.getPageSize());
+        assertEquals(1, result.getTotalPages());
+        assertEquals(1L, result.getTotalCount());
+    }
+
+    @Test
+    void findAllOrderByCategoriaNombre_ShouldReturnPagedResult() {
+        SortArticulo sortDomain = new SortArticulo("categorias.nombre", SortArticulo.Direction.ASC);
+        PageRequestArticulo pageRequestDomain = new PageRequestArticulo(0, 10);
+
+        PageRequest pageRequest = PageRequest.of(pageRequestDomain.getPage(), pageRequestDomain.getSize(), Sort.by("categorias.nombre").ascending());
+        Page<ArticuloEntity> page = mock(Page.class);
+
+        when(articuloRepository.findAllOrderByCategoriaNombre(pageRequest)).thenReturn(page);
+        when(page.getContent()).thenReturn(List.of(articuloEntity));
+        when(page.getNumber()).thenReturn(0);
+        when(page.getSize()).thenReturn(10);
+        when(page.getTotalPages()).thenReturn(1);
+        when(page.getTotalElements()).thenReturn(1L);
+        when(articuloEntityMapper.toArticulo(any(ArticuloEntity.class))).thenReturn(articulo);
+
+        PagedResult<Articulo> result = articuloAdapter.findAllOrderByCategoriaNombre(sortDomain, pageRequestDomain);
+
+        assertEquals(1, result.getContent().size());
+        assertEquals(0, result.getPage());
+        assertEquals(10, result.getPageSize());
+        assertEquals(1, result.getTotalPages());
+        assertEquals(1L, result.getTotalCount());
     }
 }
