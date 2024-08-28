@@ -5,7 +5,10 @@ import com.bootcamp.stock.articulo.domain.exception.categoryCantBeRepeatedExcept
 import com.bootcamp.stock.articulo.domain.exception.invalidCategoryCountException;
 import com.bootcamp.stock.articulo.domain.model.Articulo;
 import com.bootcamp.stock.articulo.domain.spi.IArticuloPersistencePort;
+import com.bootcamp.stock.articulo.domain.utils.PageRequestArticulo;
+import com.bootcamp.stock.articulo.domain.utils.SortArticulo;
 import com.bootcamp.stock.categoria.domain.model.Category;
+import com.bootcamp.stock.categoria.domain.utils.PagedResult;
 
 import java.util.List;
 
@@ -36,5 +39,15 @@ public class ArticuloUseCase implements IArticuloServicePort {
         }
 
         articuloPersistencePort.saveArticulo(articulo);
+    }
+
+    @Override
+    public PagedResult<Articulo> getArticulos(SortArticulo sort, PageRequestArticulo pageRequest) {
+        return articuloPersistencePort.getArticulos(sort, pageRequest);
+    }
+
+    @Override
+    public PagedResult<Articulo> findAllOrderByCategoriaNombre(SortArticulo sort, PageRequestArticulo pageRequest) {
+        return articuloPersistencePort.findAllOrderByCategoriaNombre(sort, pageRequest);
     }
 }
