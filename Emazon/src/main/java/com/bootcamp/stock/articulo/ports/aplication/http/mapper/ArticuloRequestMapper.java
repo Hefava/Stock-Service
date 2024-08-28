@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ArticuloRequestMapper {
-    @Mapping(target = "marcaID") Marca mapMarca(Long marcaID);
+    @Mapping(source = "marcaID", target = "marcaID") Marca mapMarca(Long marcaID);
     @Mapping(source = "categoryID", target = "categoryID") Category mapCategoria(Long categoryID);
 
     @Mapping(source = "marcaID", target = "marca")

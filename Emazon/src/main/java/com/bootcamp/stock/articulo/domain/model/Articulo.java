@@ -15,6 +15,19 @@ public class Articulo {
     private Set<Category> categorias;
     private Marca marca;
 
+    public Articulo() {
+    }
+
+    public Articulo(Long articuloID, String nombre, String descripcion, Long cantidad, Double precio, Set<Category> categorias, Marca marca) {
+        this.articuloID = articuloID;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.categorias = categorias;
+        this.marca = marca;
+    }
+
     public Long getArticuloID() {
         return articuloID;
     }
@@ -68,16 +81,6 @@ public class Articulo {
     }
 
     public void setMarca(Marca marca) {
-        this.marca = marca;
-    }
-
-    public Articulo(Long articuloID, String nombre, String descripcion, Long cantidad, Double precio, Set<Category> categorias, Marca marca) {
-        this.articuloID = articuloID;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.cantidad = cantidad;
-        this.precio = precio;
-        this.categorias = categorias;
         this.marca = marca;
     }
 }
