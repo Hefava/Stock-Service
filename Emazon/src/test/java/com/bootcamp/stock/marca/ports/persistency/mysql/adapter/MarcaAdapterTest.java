@@ -1,11 +1,13 @@
 package com.bootcamp.stock.marca.ports.persistency.mysql.adapter;
 
-import com.bootcamp.stock.marca.domain.model.Marca;
-import com.bootcamp.stock.marca.domain.utils.PageRequestMarca;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
-import com.bootcamp.stock.marca.domain.utils.SortMarca;
-import com.bootcamp.stock.marca.ports.persistency.mysql.mapper.MarcaEntityMapper;
-import com.bootcamp.stock.marca.ports.persistency.mysql.repository.IMarcaRepository;
+import com.bootcamp.stock.domain.model.Marca;
+import com.bootcamp.stock.domain.utils.PageRequestMarca;
+import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.utils.SortMarca;
+import com.bootcamp.stock.ports.persistency.mysql.adapter.MarcaAdapter;
+import com.bootcamp.stock.ports.persistency.mysql.entity.MarcaEntity;
+import com.bootcamp.stock.ports.persistency.mysql.mapper.MarcaEntityMapper;
+import com.bootcamp.stock.ports.persistency.mysql.repository.IMarcaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -52,10 +54,10 @@ class MarcaAdapterTest {
         SortMarca sortMarca = new SortMarca("name", SortMarca.Direction.ASC);
         PageRequestMarca pageRequestMarca = new PageRequestMarca(0, 5);
 
-        Page<com.bootcamp.stock.marca.ports.persistency.mysql.entity.MarcaEntity> page = mock(Page.class);
-        List<com.bootcamp.stock.marca.ports.persistency.mysql.entity.MarcaEntity> entities = List.of(
-                new com.bootcamp.stock.marca.ports.persistency.mysql.entity.MarcaEntity(1L, "Nike", "Sporting goods"),
-                new com.bootcamp.stock.marca.ports.persistency.mysql.entity.MarcaEntity(2L, "Adidas", "Sportswear")
+        Page<MarcaEntity> page = mock(Page.class);
+        List<MarcaEntity> entities = List.of(
+                new MarcaEntity(1L, "Nike", "Sporting goods"),
+                new MarcaEntity(2L, "Adidas", "Sportswear")
         );
 
         when(marcaRepository.findAll(any(PageRequest.class))).thenReturn(page);
@@ -86,7 +88,7 @@ class MarcaAdapterTest {
 
     @Test
     void findByNombre_ShouldReturnMarca() {
-        com.bootcamp.stock.marca.ports.persistency.mysql.entity.MarcaEntity entity = new com.bootcamp.stock.marca.ports.persistency.mysql.entity.MarcaEntity(1L, "Nike", "Sporting goods");
+        MarcaEntity entity = new MarcaEntity(1L, "Nike", "Sporting goods");
         Marca expectedMarca = new Marca(1L, "Nike", "Sporting goods");
 
         when(marcaRepository.findByNombre("Nike")).thenReturn(Optional.of(entity));

@@ -1,13 +1,14 @@
 package com.bootcamp.stock.categoria.ports.aplication.http.controller;
 
-import com.bootcamp.stock.categoria.domain.api.ICategoryServicePort;
-import com.bootcamp.stock.categoria.domain.model.Category;
-import com.bootcamp.stock.categoria.domain.utils.PageRequestCategory;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
-import com.bootcamp.stock.categoria.domain.utils.SortCategory;
-import com.bootcamp.stock.categoria.ports.aplication.http.dto.CategoryRequest;
-import com.bootcamp.stock.categoria.ports.aplication.http.dto.CategoryResponse;
-import com.bootcamp.stock.categoria.ports.aplication.http.mapper.CategoryResponseMapper;
+import com.bootcamp.stock.domain.api.ICategoryServicePort;
+import com.bootcamp.stock.domain.model.Category;
+import com.bootcamp.stock.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.utils.SortCategory;
+import com.bootcamp.stock.ports.aplication.http.controller.CategoryRestController;
+import com.bootcamp.stock.ports.aplication.http.dto.CategoryRequest;
+import com.bootcamp.stock.ports.aplication.http.dto.CategoryResponse;
+import com.bootcamp.stock.ports.aplication.http.mapper.CategoryResponseMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

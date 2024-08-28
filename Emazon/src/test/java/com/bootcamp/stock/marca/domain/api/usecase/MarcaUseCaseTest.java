@@ -1,14 +1,15 @@
 package com.bootcamp.stock.marca.domain.api.usecase;
 
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
-import com.bootcamp.stock.marca.domain.exception.InvalidMarcaDescriptionLengthException;
-import com.bootcamp.stock.marca.domain.exception.InvalidMarcaNameLengthException;
-import com.bootcamp.stock.marca.domain.exception.MarcaAlreadyExistsException;
-import com.bootcamp.stock.marca.domain.model.Marca;
-import com.bootcamp.stock.marca.domain.spi.IMarcaPersistencePort;
-import com.bootcamp.stock.marca.domain.utils.MarcaConstants;
-import com.bootcamp.stock.marca.domain.utils.PageRequestMarca;
-import com.bootcamp.stock.marca.domain.utils.SortMarca;
+import com.bootcamp.stock.domain.api.usecase.MarcaUseCase;
+import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.exception.InvalidMarcaDescriptionLengthException;
+import com.bootcamp.stock.domain.exception.InvalidMarcaNameLengthException;
+import com.bootcamp.stock.domain.exception.MarcaAlreadyExistsException;
+import com.bootcamp.stock.domain.model.Marca;
+import com.bootcamp.stock.domain.spi.IMarcaPersistencePort;
+import com.bootcamp.stock.domain.utils.MarcaConstants;
+import com.bootcamp.stock.domain.utils.PageRequestMarca;
+import com.bootcamp.stock.domain.utils.SortMarca;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

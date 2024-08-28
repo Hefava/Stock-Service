@@ -1,14 +1,15 @@
 package com.bootcamp.stock.articulo.domain.api.usecase;
 
-import com.bootcamp.stock.articulo.domain.exception.categoryCantBeRepeatedException;
-import com.bootcamp.stock.articulo.domain.exception.invalidCategoryCountException;
-import com.bootcamp.stock.articulo.domain.model.Articulo;
-import com.bootcamp.stock.articulo.domain.spi.IArticuloPersistencePort;
-import com.bootcamp.stock.articulo.domain.utils.PageRequestArticulo;
-import com.bootcamp.stock.articulo.domain.utils.SortArticulo;
-import com.bootcamp.stock.categoria.domain.model.Category;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
-import com.bootcamp.stock.marca.domain.model.Marca;
+import com.bootcamp.stock.domain.exception.categoryCantBeRepeatedException;
+import com.bootcamp.stock.domain.exception.invalidCategoryCountException;
+import com.bootcamp.stock.domain.model.Articulo;
+import com.bootcamp.stock.domain.spi.IArticuloPersistencePort;
+import com.bootcamp.stock.domain.utils.PageRequestArticulo;
+import com.bootcamp.stock.domain.utils.SortArticulo;
+import com.bootcamp.stock.domain.api.usecase.ArticuloUseCase;
+import com.bootcamp.stock.domain.model.Category;
+import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.model.Marca;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

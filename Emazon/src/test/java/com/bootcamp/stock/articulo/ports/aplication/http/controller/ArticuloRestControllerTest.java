@@ -1,14 +1,15 @@
 package com.bootcamp.stock.articulo.ports.aplication.http.controller;
 
-import com.bootcamp.stock.articulo.domain.api.IArticuloServicePort;
-import com.bootcamp.stock.articulo.domain.model.Articulo;
-import com.bootcamp.stock.articulo.domain.utils.PageRequestArticulo;
-import com.bootcamp.stock.articulo.domain.utils.SortArticulo;
-import com.bootcamp.stock.articulo.ports.aplication.http.dto.ArticuloRequest;
-import com.bootcamp.stock.articulo.ports.aplication.http.dto.ArticuloResponse;
-import com.bootcamp.stock.articulo.ports.aplication.http.mapper.ArticuloRequestMapper;
-import com.bootcamp.stock.articulo.ports.aplication.http.mapper.ArticuloResponseMapper;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.api.IArticuloServicePort;
+import com.bootcamp.stock.domain.model.Articulo;
+import com.bootcamp.stock.domain.utils.PageRequestArticulo;
+import com.bootcamp.stock.domain.utils.SortArticulo;
+import com.bootcamp.stock.ports.aplication.http.dto.ArticuloRequest;
+import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
+import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloRequestMapper;
+import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloResponseMapper;
+import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.ports.aplication.http.controller.ArticuloRestController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

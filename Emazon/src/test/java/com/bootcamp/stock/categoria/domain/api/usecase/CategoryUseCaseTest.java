@@ -1,14 +1,15 @@
 package com.bootcamp.stock.categoria.domain.api.usecase;
 
-import com.bootcamp.stock.categoria.domain.exception.CategoryAlreadyExistsException;
-import com.bootcamp.stock.categoria.domain.exception.InvalidCategoryDescriptionLengthException;
-import com.bootcamp.stock.categoria.domain.exception.InvalidCategoryNameLengthException;
-import com.bootcamp.stock.categoria.domain.model.Category;
-import com.bootcamp.stock.categoria.domain.spi.ICategoryPersistencePort;
-import com.bootcamp.stock.categoria.domain.utils.CategoriaConstants;
-import com.bootcamp.stock.categoria.domain.utils.PageRequestCategory;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
-import com.bootcamp.stock.categoria.domain.utils.SortCategory;
+import com.bootcamp.stock.domain.api.usecase.CategoryUseCase;
+import com.bootcamp.stock.domain.exception.CategoryAlreadyExistsException;
+import com.bootcamp.stock.domain.exception.InvalidCategoryDescriptionLengthException;
+import com.bootcamp.stock.domain.exception.InvalidCategoryNameLengthException;
+import com.bootcamp.stock.domain.model.Category;
+import com.bootcamp.stock.domain.spi.ICategoryPersistencePort;
+import com.bootcamp.stock.domain.utils.CategoriaConstants;
+import com.bootcamp.stock.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.utils.SortCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

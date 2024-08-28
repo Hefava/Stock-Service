@@ -1,13 +1,14 @@
 package com.bootcamp.stock.marca.ports.aplication.http.controller;
 
-import com.bootcamp.stock.marca.domain.api.IMarcaServicePort;
-import com.bootcamp.stock.marca.domain.model.Marca;
-import com.bootcamp.stock.marca.domain.utils.PageRequestMarca;
-import com.bootcamp.stock.marca.domain.utils.SortMarca;
-import com.bootcamp.stock.marca.ports.aplication.http.dto.MarcaRequest;
-import com.bootcamp.stock.marca.ports.aplication.http.dto.MarcaResponse;
-import com.bootcamp.stock.marca.ports.aplication.http.mapper.MarcaResponseMapper;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.api.IMarcaServicePort;
+import com.bootcamp.stock.domain.model.Marca;
+import com.bootcamp.stock.domain.utils.PageRequestMarca;
+import com.bootcamp.stock.domain.utils.SortMarca;
+import com.bootcamp.stock.ports.aplication.http.controller.MarcaRestController;
+import com.bootcamp.stock.ports.aplication.http.dto.MarcaRequest;
+import com.bootcamp.stock.ports.aplication.http.dto.MarcaResponse;
+import com.bootcamp.stock.ports.aplication.http.mapper.MarcaResponseMapper;
+import com.bootcamp.stock.domain.utils.PagedResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

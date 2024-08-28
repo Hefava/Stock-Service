@@ -1,12 +1,13 @@
 package com.bootcamp.stock.articulo.ports.persistency.mysql.adapter;
 
-import com.bootcamp.stock.articulo.domain.model.Articulo;
-import com.bootcamp.stock.articulo.domain.utils.PageRequestArticulo;
-import com.bootcamp.stock.articulo.domain.utils.SortArticulo;
-import com.bootcamp.stock.articulo.ports.persistency.mysql.entity.ArticuloEntity;
-import com.bootcamp.stock.articulo.ports.persistency.mysql.mapper.ArticuloEntityMapper;
-import com.bootcamp.stock.articulo.ports.persistency.mysql.repository.IArticuloRepository;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.model.Articulo;
+import com.bootcamp.stock.domain.utils.PageRequestArticulo;
+import com.bootcamp.stock.domain.utils.SortArticulo;
+import com.bootcamp.stock.ports.persistency.mysql.entity.ArticuloEntity;
+import com.bootcamp.stock.ports.persistency.mysql.mapper.ArticuloEntityMapper;
+import com.bootcamp.stock.ports.persistency.mysql.repository.IArticuloRepository;
+import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.ports.persistency.mysql.adapter.ArticuloAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
