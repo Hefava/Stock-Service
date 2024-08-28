@@ -1,6 +1,6 @@
 package com.bootcamp.stock.articulo.ports.aplication.http.dto;
 
-import java.util.Set;
+import java.util.List;
 
 public class ArticuloResponse {
     private Long articuloID;
@@ -9,27 +9,56 @@ public class ArticuloResponse {
     private Long cantidad;
     private Double precio;
     private String marcaNombre;
-    private Set<String> categoriaNombres;
+    private List<CategoriaDto> categorias;
 
     public ArticuloResponse() {
     }
 
-    public ArticuloResponse(Long articuloID, String nombre, String descripcion, Long cantidad, Double precio, String marcaNombre, Set<String> categoriaNombres) {
+    public ArticuloResponse(Long articuloID, String nombre, String descripcion, Long cantidad, Double precio, String marcaNombre, List<CategoriaDto> categorias) {
         this.articuloID = articuloID;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
         this.precio = precio;
         this.marcaNombre = marcaNombre;
-        this.categoriaNombres = categoriaNombres;
+        this.categorias = categorias;
     }
 
-    public void setArticuloID(Long articuloID) {
-        this.articuloID = articuloID;
+    public static class CategoriaDto {
+        private Long id;
+        private String nombre;
+
+        public CategoriaDto() {
+        }
+
+        public CategoriaDto(Long id, String nombre) {
+            this.id = id;
+            this.nombre = nombre;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getNombre() {
+            return nombre;
+        }
+
+        public void setNombre(String nombre) {
+            this.nombre = nombre;
+        }
     }
 
     public Long getArticuloID() {
         return articuloID;
+    }
+
+    public void setArticuloID(Long articuloID) {
+        this.articuloID = articuloID;
     }
 
     public String getNombre() {
@@ -72,11 +101,11 @@ public class ArticuloResponse {
         this.marcaNombre = marcaNombre;
     }
 
-    public Set<String> getCategoriaNombres() {
-        return categoriaNombres;
+    public List<CategoriaDto> getCategorias() {
+        return categorias;
     }
 
-    public void setCategoriaNombres(Set<String> categoriaNombres) {
-        this.categoriaNombres = categoriaNombres;
+    public void setCategorias(List<CategoriaDto> categorias) {
+        this.categorias = categorias;
     }
 }

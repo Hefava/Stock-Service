@@ -50,7 +50,7 @@ public class ArticuloRestController {
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @GetMapping("/articulos")
+    @GetMapping
     public ResponseEntity<PagedResult<ArticuloResponse>> getArticulos(
             @RequestParam(defaultValue = "nombre") @Parameter(description = "Campo de ordenación: nombre, marcaNombre, categoriaNombre") String sortBy,
             @RequestParam(defaultValue = "asc") @Parameter(description = "Orden: asc o desc") String order,

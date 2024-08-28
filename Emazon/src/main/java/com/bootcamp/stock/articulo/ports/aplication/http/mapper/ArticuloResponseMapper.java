@@ -9,7 +9,6 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -17,13 +16,13 @@ import java.util.stream.Collectors;
 public interface ArticuloResponseMapper {
 
     @Mapping(source = "marca.nombre", target = "marcaNombre")
-    @Mapping(target = "categoriaNombres", expression = "java(mapCategorias(articulo.getCategorias()))")
+    @Mapping(target = "categorias", expression = "java(mapCategorias(articulo.getCategorias()))")
     ArticuloResponse toResponse(Articulo articulo);
 
-    default Set<String> mapCategorias(Set<Category> categorias) {
+    default List<ArticuloResponse.CategoriaDto> mapCategorias(Set<Category> categorias) {
         return categorias.stream()
-                .map(Category::getNombre)
-                .collect(Collectors.toSet());
+                .map(categoria -> new ArticuloResponse.CategoriaDto(categoria.getCategoryID(), categoria.getNombre()))
+                .toList();
     }
 
     List<ArticuloResponse> toResponseList(List<Articulo> articuloList);
