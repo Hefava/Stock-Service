@@ -2,12 +2,13 @@ package com.bootcamp.stock.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Category;
 import com.bootcamp.stock.domain.spi.ICategoryPersistencePort;
-import com.bootcamp.stock.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortCategory;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.CategoryEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.repository.ICategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -26,15 +27,13 @@ public class CategoryAdapter implements ICategoryPersistencePort {
     }
 
     @Override
-    public PagedResult<Category> getCategoriesByNombre(SortCategory sortDomain, PageRequestCategory pageRequestDomain) {
-        Sort sort = Sort.by(sortDomain.getProperty());
-        if (sortDomain.getDirection() == SortCategory.Direction.DESC) {
-            sort = sort.descending();
-        } else {
-            sort = sort.ascending();
-        }
+    public PagedResult<Category> getCategoriesByNombre(SortUtil sortDomain, PageRequestUtil pageRequestDomain) {
+        Sort.Direction direction = sortDomain.getDirection() == SortUtil.Direction.DESC
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
 
-        org.springframework.data.domain.PageRequest pageRequest = org.springframework.data.domain.PageRequest.of(
+        Sort sort = Sort.by(direction, sortDomain.getProperty());
+        PageRequest pageRequest = PageRequest.of(
                 pageRequestDomain.getPage(),
                 pageRequestDomain.getSize(),
                 sort

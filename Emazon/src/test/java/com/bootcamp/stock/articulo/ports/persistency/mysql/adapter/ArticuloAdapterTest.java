@@ -1,8 +1,8 @@
 package com.bootcamp.stock.articulo.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Articulo;
-import com.bootcamp.stock.domain.utils.PageRequestArticulo;
-import com.bootcamp.stock.domain.utils.SortArticulo;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.entity.ArticuloEntity;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.ArticuloEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.repository.IArticuloRepository;
@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -79,11 +78,11 @@ class ArticuloAdapterTest {
 
     @Test
     void getArticulos_ShouldReturnPagedResult() {
-        SortArticulo sortDomain = new SortArticulo("nombre", SortArticulo.Direction.ASC);
-        PageRequestArticulo pageRequestDomain = new PageRequestArticulo(0, 10);
+        SortUtil sortDomain = new SortUtil("nombre", SortUtil.Direction.ASC);
+        PageRequestUtil pageRequestDomain = new PageRequestUtil(0, 10);
 
-        Sort sort = Sort.by(sortDomain.getProperty());
-        if (sortDomain.getDirection() == SortArticulo.Direction.DESC) {
+        org.springframework.data.domain.Sort sort = org.springframework.data.domain.Sort.by(sortDomain.getProperty());
+        if (sortDomain.getDirection() == SortUtil.Direction.DESC) {
             sort = sort.descending();
         } else {
             sort = sort.ascending();
@@ -111,10 +110,10 @@ class ArticuloAdapterTest {
 
     @Test
     void findAllOrderByCategoriaNombre_ShouldReturnPagedResult() {
-        SortArticulo sortDomain = new SortArticulo("categorias.nombre", SortArticulo.Direction.ASC);
-        PageRequestArticulo pageRequestDomain = new PageRequestArticulo(0, 10);
+        SortUtil sortDomain = new SortUtil("categorias.nombre", SortUtil.Direction.ASC);
+        PageRequestUtil pageRequestDomain = new PageRequestUtil(0, 10);
 
-        PageRequest pageRequest = PageRequest.of(pageRequestDomain.getPage(), pageRequestDomain.getSize(), Sort.by("categorias.nombre").ascending());
+        PageRequest pageRequest = PageRequest.of(pageRequestDomain.getPage(), pageRequestDomain.getSize(), org.springframework.data.domain.Sort.by("categorias.nombre").ascending());
         Page<ArticuloEntity> page = mock(Page.class);
 
         when(articuloRepository.findAllOrderByCategoriaNombre(pageRequest)).thenReturn(page);

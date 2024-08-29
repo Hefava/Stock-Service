@@ -2,9 +2,9 @@ package com.bootcamp.stock.ports.aplication.http.controller;
 
 import com.bootcamp.stock.domain.api.ICategoryServicePort;
 import com.bootcamp.stock.domain.model.Category;
-import com.bootcamp.stock.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortCategory;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.dto.CategoryRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.CategoryResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.CategoryResponseMapper;
@@ -53,9 +53,9 @@ public class CategoryRestController {
             @RequestParam(defaultValue = "asc") @Parameter(description = "Sort order: asc or desc") String order,
             @PageableDefault(size = 5) @Parameter(hidden = true) Pageable pageable) {
 
-        SortCategory.Direction direction = order.equalsIgnoreCase("desc") ? SortCategory.Direction.DESC : SortCategory.Direction.ASC;
-        SortCategory sortDomain = new SortCategory("nombre", direction);
-        PageRequestCategory pageRequestDomain = new PageRequestCategory(pageable.getPageNumber(), pageable.getPageSize());
+        SortUtil.Direction direction = order.equalsIgnoreCase("desc") ? SortUtil.Direction.DESC : SortUtil.Direction.ASC;
+        SortUtil sortDomain = new SortUtil("nombre", direction);
+        PageRequestUtil pageRequestDomain = new PageRequestUtil(pageable.getPageNumber(), pageable.getPageSize());
 
         PagedResult<Category> result = categoryService.getCategoriesByNombre(sortDomain, pageRequestDomain);
         PagedResult<CategoryResponse> response = new PagedResult<>(

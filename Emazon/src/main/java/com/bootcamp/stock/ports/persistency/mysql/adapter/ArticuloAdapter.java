@@ -2,8 +2,8 @@ package com.bootcamp.stock.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.spi.IArticuloPersistencePort;
-import com.bootcamp.stock.domain.utils.PageRequestArticulo;
-import com.bootcamp.stock.domain.utils.SortArticulo;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.entity.ArticuloEntity;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.ArticuloEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.repository.IArticuloRepository;
@@ -29,9 +29,9 @@ public class ArticuloAdapter implements IArticuloPersistencePort {
     }
 
     @Override
-    public PagedResult<Articulo> getArticulos(SortArticulo sortDomain, PageRequestArticulo pageRequestDomain) {
+    public PagedResult<Articulo> getArticulos(SortUtil sortDomain, PageRequestUtil pageRequestDomain) {
         Sort sort = Sort.by(sortDomain.getProperty());
-        if (sortDomain.getDirection() == SortArticulo.Direction.DESC) {
+        if (sortDomain.getDirection() == SortUtil.Direction.DESC) {
             sort = sort.descending();
         } else {
             sort = sort.ascending();
@@ -58,11 +58,11 @@ public class ArticuloAdapter implements IArticuloPersistencePort {
     }
 
     @Override
-    public PagedResult<Articulo> findAllOrderByCategoriaNombre(SortArticulo sortDomain, PageRequestArticulo pageRequestDomain) {
+    public PagedResult<Articulo> findAllOrderByCategoriaNombre(SortUtil sortDomain, PageRequestUtil pageRequestDomain) {
         PageRequest pageRequest = PageRequest.of(
                 pageRequestDomain.getPage(),
                 pageRequestDomain.getSize(),
-                Sort.by("categorias.nombre").ascending()
+                org.springframework.data.domain.Sort.by("categorias.nombre").ascending()
         );
 
         Page<ArticuloEntity> page = articuloRepository.findAllOrderByCategoriaNombre(pageRequest);

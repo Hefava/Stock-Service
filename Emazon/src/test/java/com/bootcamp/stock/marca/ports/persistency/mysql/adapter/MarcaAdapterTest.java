@@ -1,9 +1,9 @@
 package com.bootcamp.stock.marca.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Marca;
-import com.bootcamp.stock.domain.utils.PageRequestMarca;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortMarca;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.adapter.MarcaAdapter;
 import com.bootcamp.stock.ports.persistency.mysql.entity.MarcaEntity;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.MarcaEntityMapper;
@@ -51,8 +51,8 @@ class MarcaAdapterTest {
 
     @Test
     void getMarcasByNombre_ShouldReturnPagedResult() {
-        SortMarca sortMarca = new SortMarca("name", SortMarca.Direction.ASC);
-        PageRequestMarca pageRequestMarca = new PageRequestMarca(0, 5);
+        SortUtil sort = new SortUtil("name", SortUtil.Direction.ASC);
+        PageRequestUtil pageRequestMarca = new PageRequestUtil(0, 5);
 
         Page<MarcaEntity> page = mock(Page.class);
         List<MarcaEntity> entities = List.of(
@@ -74,7 +74,7 @@ class MarcaAdapterTest {
 
         when(marcaEntityMapper.toMarca(any())).thenReturn(marcas.get(0), marcas.get(1));
 
-        PagedResult<Marca> result = marcaAdapter.getMarcasByNombre(sortMarca, pageRequestMarca);
+        PagedResult<Marca> result = marcaAdapter.getMarcasByNombre(sort, pageRequestMarca);
 
         assertEquals(0, result.getPage());
         assertEquals(5, result.getPageSize());

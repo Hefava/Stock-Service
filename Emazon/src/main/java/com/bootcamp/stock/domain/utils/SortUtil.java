@@ -1,6 +1,6 @@
 package com.bootcamp.stock.domain.utils;
 
-public class SortArticulo {
+public class SortUtil {
     public String getProperty() {
         return property;
     }
@@ -11,7 +11,7 @@ public class SortArticulo {
 
     private final String property;
 
-    public SortArticulo(String property, Direction direction) {
+    public SortUtil(String property, Direction direction) {
         this.property = property;
         this.direction = direction;
     }

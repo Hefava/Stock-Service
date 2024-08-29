@@ -1,10 +1,10 @@
 package com.bootcamp.stock.ports.persistency.mysql.adapter;
 
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
 import com.bootcamp.stock.domain.model.Marca;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.domain.spi.IMarcaPersistencePort;
-import com.bootcamp.stock.domain.utils.PageRequestMarca;
-import com.bootcamp.stock.domain.utils.SortMarca;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.MarcaEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.repository.IMarcaRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +27,9 @@ public class MarcaAdapter implements IMarcaPersistencePort {
     }
 
     @Override
-    public PagedResult<Marca> getMarcasByNombre(SortMarca sortDomain, PageRequestMarca pageRequestDomain) {
+    public PagedResult<Marca> getMarcasByNombre(SortUtil sortDomain, PageRequestUtil pageRequestDomain) {
         Sort sort = Sort.by(sortDomain.getProperty());
-        if (sortDomain.getDirection() == SortMarca.Direction.DESC) {
+        if (sortDomain.getDirection() == SortUtil.Direction.DESC) {
             sort = sort.descending();
         } else {
             sort = sort.ascending();

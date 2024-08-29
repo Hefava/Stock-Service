@@ -1,9 +1,9 @@
 package com.bootcamp.stock.categoria.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Category;
-import com.bootcamp.stock.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortCategory;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.adapter.CategoryAdapter;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.CategoryEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.entity.CategoryEntity;
@@ -51,8 +51,8 @@ class CategoryAdapterTest {
 
     @Test
     void getCategoriesByNombre_ShouldReturnPagedResult() {
-        SortCategory sortCategory = new SortCategory("name", SortCategory.Direction.ASC);
-        PageRequestCategory pageRequestCategory = new PageRequestCategory(0, 5);
+        SortUtil sort = new SortUtil("name", SortUtil.Direction.ASC);
+        PageRequestUtil pageRequestCategory = new PageRequestUtil(0, 5);
 
         Page<CategoryEntity> page = mock(Page.class);
         List<CategoryEntity> entities = List.of(
@@ -74,7 +74,7 @@ class CategoryAdapterTest {
 
         when(categoryEntityMapper.toCategory(any())).thenReturn(categories.get(0), categories.get(1));
 
-        PagedResult<Category> result = categoryAdapter.getCategoriesByNombre(sortCategory, pageRequestCategory);
+        PagedResult<Category> result = categoryAdapter.getCategoriesByNombre(sort, pageRequestCategory);
 
         assertEquals(0, result.getPage());
         assertEquals(5, result.getPageSize());

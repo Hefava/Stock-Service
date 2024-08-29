@@ -6,10 +6,7 @@ import com.bootcamp.stock.domain.exception.InvalidCategoryDescriptionLengthExcep
 import com.bootcamp.stock.domain.exception.InvalidCategoryNameLengthException;
 import com.bootcamp.stock.domain.model.Category;
 import com.bootcamp.stock.domain.spi.ICategoryPersistencePort;
-import com.bootcamp.stock.domain.utils.CategoriaConstants;
-import com.bootcamp.stock.domain.utils.PageRequestCategory;
-import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortCategory;
+import com.bootcamp.stock.domain.utils.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -80,8 +77,8 @@ class CategoryUseCaseTest {
         Category category2 = new Category(2L, "Libros", "Diferentes géneros de libros");
         List<Category> expectedCategories = Arrays.asList(category1, category2);
 
-        SortCategory sort = new SortCategory("nombre", SortCategory.Direction.ASC);
-        PageRequestCategory pageRequest = new PageRequestCategory(0, 10);
+        SortUtil sort = new SortUtil("nombre", SortUtil.Direction.ASC);
+        PageRequestUtil pageRequest = new PageRequestUtil(0, 10);
 
         PagedResult<Category> pagedResult = new PagedResult<>(expectedCategories, 2, 0, 10, 2);
 

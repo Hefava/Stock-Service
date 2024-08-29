@@ -2,8 +2,8 @@ package com.bootcamp.stock.marca.ports.aplication.http.controller;
 
 import com.bootcamp.stock.domain.api.IMarcaServicePort;
 import com.bootcamp.stock.domain.model.Marca;
-import com.bootcamp.stock.domain.utils.PageRequestMarca;
-import com.bootcamp.stock.domain.utils.SortMarca;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.controller.MarcaRestController;
 import com.bootcamp.stock.ports.aplication.http.dto.MarcaRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.MarcaResponse;
@@ -70,14 +70,14 @@ class MarcaRestControllerTest {
         PagedResult<Marca> pagedResult = new PagedResult<>(marcas, 0, 5, 1, 3);
         PagedResult<MarcaResponse> expectedPagedResult = new PagedResult<>(marcaResponses, 0, 5, 1, 3);
 
-        when(marcaService.getMarcasByNombre(any(SortMarca.class), any(PageRequestMarca.class))).thenReturn(pagedResult);
+        when(marcaService.getMarcasByNombre(any(SortUtil.class), any(PageRequestUtil.class))).thenReturn(pagedResult);
         when(marcaResponseMapper.toResponseList(marcas)).thenReturn(marcaResponses);
 
         ResponseEntity<PagedResult<MarcaResponse>> response = marcaRestController.getMarcasByNombre("asc", pageable);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedPagedResult, response.getBody());
-        verify(marcaService, times(1)).getMarcasByNombre(any(SortMarca.class), any(PageRequestMarca.class));
+        verify(marcaService, times(1)).getMarcasByNombre(any(SortUtil.class), any(PageRequestUtil.class));
         verify(marcaResponseMapper, times(1)).toResponseList(marcas);
     }
 
@@ -100,14 +100,14 @@ class MarcaRestControllerTest {
         PagedResult<Marca> pagedResult = new PagedResult<>(marcas, 0, 5, 1, 3);
         PagedResult<MarcaResponse> expectedPagedResult = new PagedResult<>(marcaResponses, 0, 5, 1, 3);
 
-        when(marcaService.getMarcasByNombre(any(SortMarca.class), any(PageRequestMarca.class))).thenReturn(pagedResult);
+        when(marcaService.getMarcasByNombre(any(SortUtil.class), any(PageRequestUtil.class))).thenReturn(pagedResult);
         when(marcaResponseMapper.toResponseList(marcas)).thenReturn(marcaResponses);
 
         ResponseEntity<PagedResult<MarcaResponse>> response = marcaRestController.getMarcasByNombre("desc", pageable);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedPagedResult, response.getBody());
-        verify(marcaService, times(1)).getMarcasByNombre(any(SortMarca.class), any(PageRequestMarca.class));
+        verify(marcaService, times(1)).getMarcasByNombre(any(SortUtil.class), any(PageRequestUtil.class));
         verify(marcaResponseMapper, times(1)).toResponseList(marcas);
     }
 }

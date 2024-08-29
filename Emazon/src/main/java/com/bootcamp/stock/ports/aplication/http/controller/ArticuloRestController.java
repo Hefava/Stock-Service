@@ -2,8 +2,8 @@ package com.bootcamp.stock.ports.aplication.http.controller;
 
 import com.bootcamp.stock.domain.api.IArticuloServicePort;
 import com.bootcamp.stock.domain.model.Articulo;
-import com.bootcamp.stock.domain.utils.PageRequestArticulo;
-import com.bootcamp.stock.domain.utils.SortArticulo;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloRequestMapper;
@@ -56,14 +56,14 @@ public class ArticuloRestController {
             @RequestParam(defaultValue = "asc") @Parameter(description = "Orden: asc o desc") String order,
             @PageableDefault(size = 10) @Parameter(description = "Paginación") Pageable pageable) {
 
-        SortArticulo.Direction direction = SortArticulo.Direction.ASC;
+        SortUtil.Direction direction = SortUtil.Direction.ASC;
         if ("desc".equalsIgnoreCase(order)) {
-            direction = SortArticulo.Direction.DESC;
+            direction = SortUtil.Direction.DESC;
         }
 
-        SortArticulo sort = new SortArticulo(sortBy, direction);
+        SortUtil sort = new SortUtil(sortBy, direction);
 
-        PageRequestArticulo pageRequest = new PageRequestArticulo(pageable.getPageNumber(), pageable.getPageSize());
+        PageRequestUtil pageRequest = new PageRequestUtil(pageable.getPageNumber(), pageable.getPageSize());
 
         PagedResult<Articulo> result;
         if ("categoriaNombre".equalsIgnoreCase(sortBy)) {

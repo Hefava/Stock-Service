@@ -5,8 +5,8 @@ import com.bootcamp.stock.domain.exception.categoryCantBeRepeatedException;
 import com.bootcamp.stock.domain.exception.invalidCategoryCountException;
 import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.spi.IArticuloPersistencePort;
-import com.bootcamp.stock.domain.utils.PageRequestArticulo;
-import com.bootcamp.stock.domain.utils.SortArticulo;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.domain.model.Category;
 import com.bootcamp.stock.domain.utils.PagedResult;
 
@@ -42,12 +42,12 @@ public class ArticuloUseCase implements IArticuloServicePort {
     }
 
     @Override
-    public PagedResult<Articulo> getArticulos(SortArticulo sort, PageRequestArticulo pageRequest) {
+    public PagedResult<Articulo> getArticulos(SortUtil sort, PageRequestUtil pageRequest) {
         return articuloPersistencePort.getArticulos(sort, pageRequest);
     }
 
     @Override
-    public PagedResult<Articulo> findAllOrderByCategoriaNombre(SortArticulo sort, PageRequestArticulo pageRequest) {
+    public PagedResult<Articulo> findAllOrderByCategoriaNombre(SortUtil sort, PageRequestUtil pageRequest) {
         return articuloPersistencePort.findAllOrderByCategoriaNombre(sort, pageRequest);
     }
 }

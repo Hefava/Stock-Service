@@ -1,6 +1,7 @@
 package com.bootcamp.stock.marca.domain.api.usecase;
 
 import com.bootcamp.stock.domain.api.usecase.MarcaUseCase;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
 import com.bootcamp.stock.domain.exception.InvalidMarcaDescriptionLengthException;
 import com.bootcamp.stock.domain.exception.InvalidMarcaNameLengthException;
@@ -8,8 +9,7 @@ import com.bootcamp.stock.domain.exception.MarcaAlreadyExistsException;
 import com.bootcamp.stock.domain.model.Marca;
 import com.bootcamp.stock.domain.spi.IMarcaPersistencePort;
 import com.bootcamp.stock.domain.utils.MarcaConstants;
-import com.bootcamp.stock.domain.utils.PageRequestMarca;
-import com.bootcamp.stock.domain.utils.SortMarca;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -79,8 +79,8 @@ class MarcaUseCaseTest {
                 new Marca(3L, "Nike", "Ropa deportiva")
         );
 
-        SortMarca sort = new SortMarca("nombre", SortMarca.Direction.ASC);
-        PageRequestMarca pageRequest = new PageRequestMarca(0, 3);
+        SortUtil sort = new SortUtil("nombre", SortUtil.Direction.ASC);
+        PageRequestUtil pageRequest = new PageRequestUtil(0, 3);
 
         when(marcaPersistencePort.getMarcasByNombre(sort, pageRequest)).thenReturn(new PagedResult<>(marcas, 0, 3, 1, 3));
 

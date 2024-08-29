@@ -7,9 +7,9 @@ import com.bootcamp.stock.domain.exception.InvalidCategoryNameLengthException;
 import com.bootcamp.stock.domain.model.Category;
 import com.bootcamp.stock.domain.spi.ICategoryPersistencePort;
 import com.bootcamp.stock.domain.utils.CategoriaConstants;
-import com.bootcamp.stock.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortCategory;
+import com.bootcamp.stock.domain.utils.SortUtil;
 
 public class CategoryUseCase implements ICategoryServicePort {
     private final ICategoryPersistencePort categoryPersistencePort;
@@ -33,7 +33,7 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public PagedResult<Category> getCategoriesByNombre(SortCategory sort, PageRequestCategory pageRequest) {
+    public PagedResult<Category> getCategoriesByNombre(SortUtil sort, PageRequestUtil pageRequest) {
         return categoryPersistencePort.getCategoriesByNombre(sort, pageRequest);
     }
 }

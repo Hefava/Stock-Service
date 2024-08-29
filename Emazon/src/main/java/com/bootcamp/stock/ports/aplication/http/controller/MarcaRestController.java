@@ -1,10 +1,10 @@
 package com.bootcamp.stock.ports.aplication.http.controller;
 
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
 import com.bootcamp.stock.domain.api.IMarcaServicePort;
 import com.bootcamp.stock.domain.model.Marca;
-import com.bootcamp.stock.domain.utils.PageRequestMarca;
-import com.bootcamp.stock.domain.utils.SortMarca;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.dto.MarcaRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.MarcaResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.MarcaResponseMapper;
@@ -49,9 +49,9 @@ public class MarcaRestController {
             @RequestParam(defaultValue = "asc") @Parameter(description = "Sort order: asc or desc") String order,
             @PageableDefault(size = 5) @Parameter(hidden = true) Pageable pageable) {
 
-        SortMarca.Direction direction = order.equalsIgnoreCase("desc") ? SortMarca.Direction.DESC : SortMarca.Direction.ASC;
-        SortMarca sortDomain = new SortMarca("nombre", direction);
-        PageRequestMarca pageRequestDomain = new PageRequestMarca(pageable.getPageNumber(), pageable.getPageSize());
+        SortUtil.Direction direction = order.equalsIgnoreCase("desc") ? SortUtil.Direction.DESC : SortUtil.Direction.ASC;
+        SortUtil sortDomain = new SortUtil("nombre", direction);
+        PageRequestUtil pageRequestDomain = new PageRequestUtil(pageable.getPageNumber(), pageable.getPageSize());
 
         PagedResult<Marca> result = marcaService.getMarcasByNombre(sortDomain, pageRequestDomain);
         PagedResult<MarcaResponse> response = new PagedResult<>(

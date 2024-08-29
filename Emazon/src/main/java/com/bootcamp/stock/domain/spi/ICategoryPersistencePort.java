@@ -1,16 +1,16 @@
 package com.bootcamp.stock.domain.spi;
 
 import com.bootcamp.stock.domain.model.Category;
-import com.bootcamp.stock.domain.utils.PageRequestCategory;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortCategory;
+import com.bootcamp.stock.domain.utils.SortUtil;
 
 import java.util.Optional;
 
 public interface ICategoryPersistencePort {
     void saveCategory(Category category);
 
-    PagedResult<Category> getCategoriesByNombre(SortCategory sort, PageRequestCategory pageRequest);
+    PagedResult<Category> getCategoriesByNombre(SortUtil sortDomain, PageRequestUtil pageRequestDomain);
 
     Optional<Category> findByNombre(String nombre);
 }

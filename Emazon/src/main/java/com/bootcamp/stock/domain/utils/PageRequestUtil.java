@@ -1,7 +1,7 @@
 package com.bootcamp.stock.domain.utils;
 
-public class PageRequestCategory {
-    public PageRequestCategory(int page, int size) {
+public class PageRequestUtil {
+    public PageRequestUtil(int page, int size) {
         this.page = page;
         this.size = size;
     }

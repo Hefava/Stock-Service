@@ -4,8 +4,8 @@ import com.bootcamp.stock.domain.exception.categoryCantBeRepeatedException;
 import com.bootcamp.stock.domain.exception.invalidCategoryCountException;
 import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.spi.IArticuloPersistencePort;
-import com.bootcamp.stock.domain.utils.PageRequestArticulo;
-import com.bootcamp.stock.domain.utils.SortArticulo;
+import com.bootcamp.stock.domain.utils.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.SortUtil;
 import com.bootcamp.stock.domain.api.usecase.ArticuloUseCase;
 import com.bootcamp.stock.domain.model.Category;
 import com.bootcamp.stock.domain.utils.PagedResult;
@@ -76,8 +76,8 @@ class ArticuloUseCaseTest {
 
     @Test
     void getArticulos_ShouldReturnPagedResult() {
-        SortArticulo sort = mock(SortArticulo.class);
-        PageRequestArticulo pageRequest = mock(PageRequestArticulo.class);
+        SortUtil sort = mock(SortUtil.class);
+        PageRequestUtil pageRequest = mock(PageRequestUtil.class);
         PagedResult<Articulo> expectedPagedResult = mock(PagedResult.class);
 
         when(articuloPersistencePort.getArticulos(sort, pageRequest)).thenReturn(expectedPagedResult);
@@ -90,8 +90,8 @@ class ArticuloUseCaseTest {
 
     @Test
     void findAllOrderByCategoriaNombre_ShouldReturnPagedResult() {
-        SortArticulo sort = mock(SortArticulo.class);
-        PageRequestArticulo pageRequest = mock(PageRequestArticulo.class);
+        SortUtil sort = mock(SortUtil.class);
+        PageRequestUtil pageRequest = mock(PageRequestUtil.class);
         PagedResult<Articulo> expectedPagedResult = mock(PagedResult.class);
 
         when(articuloPersistencePort.findAllOrderByCategoriaNombre(sort, pageRequest)).thenReturn(expectedPagedResult);
