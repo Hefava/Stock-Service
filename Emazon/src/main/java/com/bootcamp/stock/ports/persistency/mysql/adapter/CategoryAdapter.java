@@ -2,9 +2,9 @@ package com.bootcamp.stock.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Category;
 import com.bootcamp.stock.domain.spi.ICategoryPersistencePort;
-import com.bootcamp.stock.domain.utils.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortUtil;
+import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.CategoryEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.repository.ICategoryRepository;
 import lombok.RequiredArgsConstructor;

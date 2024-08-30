@@ -2,12 +2,12 @@ package com.bootcamp.stock.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.spi.IArticuloPersistencePort;
-import com.bootcamp.stock.domain.utils.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.SortUtil;
+import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.entity.ArticuloEntity;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.ArticuloEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.repository.IArticuloRepository;
-import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -59,20 +60,23 @@ public class ArticuloAdapter implements IArticuloPersistencePort {
 
     @Override
     public PagedResult<Articulo> findAllOrderByCategoriaNombre(SortUtil sortDomain, PageRequestUtil pageRequestDomain) {
+        Sort sort = Sort.by("categorias.nombre").ascending();
+
         PageRequest pageRequest = PageRequest.of(
                 pageRequestDomain.getPage(),
                 pageRequestDomain.getSize(),
-                org.springframework.data.domain.Sort.by("categorias.nombre").ascending()
+                sort
         );
 
         Page<ArticuloEntity> page = articuloRepository.findAllOrderByCategoriaNombre(pageRequest);
 
-        List<Articulo> content = page.getContent().stream()
+        List<Articulo> articulos = page.getContent().stream()
                 .map(articuloEntityMapper::toArticulo)
-                .toList();
+                .distinct()
+                .collect(Collectors.toList());
 
         return new PagedResult<>(
-                content,
+                articulos,
                 page.getNumber(),
                 page.getSize(),
                 page.getTotalPages(),

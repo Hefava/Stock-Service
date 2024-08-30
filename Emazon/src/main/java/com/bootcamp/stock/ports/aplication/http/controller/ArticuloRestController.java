@@ -2,13 +2,13 @@ package com.bootcamp.stock.ports.aplication.http.controller;
 
 import com.bootcamp.stock.domain.api.IArticuloServicePort;
 import com.bootcamp.stock.domain.model.Articulo;
-import com.bootcamp.stock.domain.utils.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.SortUtil;
+import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloRequestMapper;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloResponseMapper;
-import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

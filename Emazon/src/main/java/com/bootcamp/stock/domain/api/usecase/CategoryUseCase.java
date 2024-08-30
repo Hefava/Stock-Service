@@ -6,10 +6,10 @@ import com.bootcamp.stock.domain.exception.InvalidCategoryDescriptionLengthExcep
 import com.bootcamp.stock.domain.exception.InvalidCategoryNameLengthException;
 import com.bootcamp.stock.domain.model.Category;
 import com.bootcamp.stock.domain.spi.ICategoryPersistencePort;
-import com.bootcamp.stock.domain.utils.CategoriaConstants;
-import com.bootcamp.stock.domain.utils.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortUtil;
+import com.bootcamp.stock.domain.utils.constants.CategoriaConstants;
+import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
 
 public class CategoryUseCase implements ICategoryServicePort {
     private final ICategoryPersistencePort categoryPersistencePort;

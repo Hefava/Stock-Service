@@ -1,9 +1,9 @@
 package com.bootcamp.stock.domain.spi;
 
 import com.bootcamp.stock.domain.model.Articulo;
-import com.bootcamp.stock.domain.utils.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.SortUtil;
-import com.bootcamp.stock.domain.utils.PagedResult;
+import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
+import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
 
 import java.util.Optional;
 

@@ -1,9 +1,9 @@
 package com.bootcamp.stock.marca.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Marca;
-import com.bootcamp.stock.domain.utils.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.PagedResult;
-import com.bootcamp.stock.domain.utils.SortUtil;
+import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.adapter.MarcaAdapter;
 import com.bootcamp.stock.ports.persistency.mysql.entity.MarcaEntity;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.MarcaEntityMapper;
