@@ -7,9 +7,9 @@ import com.bootcamp.stock.domain.exception.MarcaAlreadyExistsException;
 import com.bootcamp.stock.domain.model.Marca;
 import com.bootcamp.stock.domain.spi.IMarcaPersistencePort;
 import com.bootcamp.stock.domain.utils.constants.MarcaConstants;
-import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
-import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
+import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 
 public class MarcaUseCase implements IMarcaServicePort {
     private final IMarcaPersistencePort marcaPersistencePort;

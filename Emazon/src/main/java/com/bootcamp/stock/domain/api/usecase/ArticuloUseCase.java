@@ -5,10 +5,11 @@ import com.bootcamp.stock.domain.exception.categoryCantBeRepeatedException;
 import com.bootcamp.stock.domain.exception.invalidCategoryCountException;
 import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.spi.IArticuloPersistencePort;
-import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
 import com.bootcamp.stock.domain.model.Category;
-import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.constants.ArticuloConstants;
+import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 
 import java.util.List;
 
@@ -22,7 +23,9 @@ public class ArticuloUseCase implements IArticuloServicePort {
 
     @Override
     public void saveArticulo(Articulo articulo) {
-        if (articulo.getCategorias() == null || articulo.getCategorias().isEmpty() || articulo.getCategorias().size() > 3) {
+        if (articulo.getCategorias() == null ||
+                articulo.getCategorias().isEmpty() ||
+                articulo.getCategorias().size() > ArticuloConstants.MAX_CATEGORIAS) {
             throw new invalidCategoryCountException();
         }
 

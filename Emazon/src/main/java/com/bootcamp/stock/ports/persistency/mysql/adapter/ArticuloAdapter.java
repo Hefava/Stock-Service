@@ -2,12 +2,12 @@ package com.bootcamp.stock.ports.persistency.mysql.adapter;
 
 import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.spi.IArticuloPersistencePort;
-import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
+import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 import com.bootcamp.stock.ports.persistency.mysql.entity.ArticuloEntity;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.ArticuloEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.repository.IArticuloRepository;
-import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.pagination.PagedResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -73,7 +72,7 @@ public class ArticuloAdapter implements IArticuloPersistencePort {
         List<Articulo> articulos = page.getContent().stream()
                 .map(articuloEntityMapper::toArticulo)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         return new PagedResult<>(
                 articulos,

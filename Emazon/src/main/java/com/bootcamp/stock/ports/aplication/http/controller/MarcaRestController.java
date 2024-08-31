@@ -1,10 +1,10 @@
 package com.bootcamp.stock.ports.aplication.http.controller;
 
-import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.pagination.PagedResult;
 import com.bootcamp.stock.domain.api.IMarcaServicePort;
 import com.bootcamp.stock.domain.model.Marca;
-import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
+import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.dto.MarcaRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.MarcaResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.MarcaResponseMapper;
@@ -18,7 +18,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/marca")

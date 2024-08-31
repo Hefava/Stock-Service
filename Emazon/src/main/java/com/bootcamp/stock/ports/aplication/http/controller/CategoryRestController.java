@@ -2,9 +2,9 @@ package com.bootcamp.stock.ports.aplication.http.controller;
 
 import com.bootcamp.stock.domain.api.ICategoryServicePort;
 import com.bootcamp.stock.domain.model.Category;
-import com.bootcamp.stock.domain.utils.Pagination.PageRequestUtil;
-import com.bootcamp.stock.domain.utils.Pagination.PagedResult;
-import com.bootcamp.stock.domain.utils.Pagination.SortUtil;
+import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.dto.CategoryRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.CategoryResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.CategoryResponseMapper;
