@@ -1,11 +1,13 @@
 package com.bootcamp.stock.categoria.ports.persistency.mysql.adapter;
 
-import com.bootcamp.stock.categoria.domain.model.Category;
-import com.bootcamp.stock.categoria.domain.utils.PageRequestCategory;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
-import com.bootcamp.stock.categoria.domain.utils.SortCategory;
-import com.bootcamp.stock.categoria.ports.persistency.mysql.mapper.CategoryEntityMapper;
-import com.bootcamp.stock.categoria.ports.persistency.mysql.repository.ICategoryRepository;
+import com.bootcamp.stock.domain.model.Category;
+import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.pagination.SortUtil;
+import com.bootcamp.stock.ports.persistency.mysql.adapter.CategoryAdapter;
+import com.bootcamp.stock.ports.persistency.mysql.mapper.CategoryEntityMapper;
+import com.bootcamp.stock.ports.persistency.mysql.entity.CategoryEntity;
+import com.bootcamp.stock.ports.persistency.mysql.repository.ICategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -49,13 +51,13 @@ class CategoryAdapterTest {
 
     @Test
     void getCategoriesByNombre_ShouldReturnPagedResult() {
-        SortCategory sortCategory = new SortCategory("name", SortCategory.Direction.ASC);
-        PageRequestCategory pageRequestCategory = new PageRequestCategory(0, 5);
+        SortUtil sort = new SortUtil("name", SortUtil.Direction.ASC);
+        PageRequestUtil pageRequestCategory = new PageRequestUtil(0, 5);
 
-        Page<com.bootcamp.stock.categoria.ports.persistency.mysql.entity.CategoryEntity> page = mock(Page.class);
-        List<com.bootcamp.stock.categoria.ports.persistency.mysql.entity.CategoryEntity> entities = List.of(
-                new com.bootcamp.stock.categoria.ports.persistency.mysql.entity.CategoryEntity(1L, "Electronics", "Electronic gadgets"),
-                new com.bootcamp.stock.categoria.ports.persistency.mysql.entity.CategoryEntity(2L, "Books", "Various books")
+        Page<CategoryEntity> page = mock(Page.class);
+        List<CategoryEntity> entities = List.of(
+                new CategoryEntity(1L, "Electronics", "Electronic gadgets"),
+                new CategoryEntity(2L, "Books", "Various books")
         );
 
         when(categoryRepository.findAll(any(PageRequest.class))).thenReturn(page);
@@ -72,7 +74,7 @@ class CategoryAdapterTest {
 
         when(categoryEntityMapper.toCategory(any())).thenReturn(categories.get(0), categories.get(1));
 
-        PagedResult<Category> result = categoryAdapter.getCategoriesByNombre(sortCategory, pageRequestCategory);
+        PagedResult<Category> result = categoryAdapter.getCategoriesByNombre(sort, pageRequestCategory);
 
         assertEquals(0, result.getPage());
         assertEquals(5, result.getPageSize());
@@ -86,7 +88,7 @@ class CategoryAdapterTest {
 
     @Test
     void findByNombre_ShouldReturnCategory() {
-        com.bootcamp.stock.categoria.ports.persistency.mysql.entity.CategoryEntity entity = new com.bootcamp.stock.categoria.ports.persistency.mysql.entity.CategoryEntity(1L, "Electronics", "Electronic gadgets");
+        CategoryEntity entity = new CategoryEntity(1L, "Electronics", "Electronic gadgets");
         Category expectedCategory = new Category(1L, "Electronics", "Electronic gadgets");
 
         when(categoryRepository.findByNombre("Electronics")).thenReturn(Optional.of(entity));

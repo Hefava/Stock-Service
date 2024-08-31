@@ -1,13 +1,14 @@
 package com.bootcamp.stock.categoria.ports.aplication.http.controller;
 
-import com.bootcamp.stock.categoria.domain.api.ICategoryServicePort;
-import com.bootcamp.stock.categoria.domain.model.Category;
-import com.bootcamp.stock.categoria.domain.utils.PageRequestCategory;
-import com.bootcamp.stock.categoria.domain.utils.PagedResult;
-import com.bootcamp.stock.categoria.domain.utils.SortCategory;
-import com.bootcamp.stock.categoria.ports.aplication.http.dto.CategoryRequest;
-import com.bootcamp.stock.categoria.ports.aplication.http.dto.CategoryResponse;
-import com.bootcamp.stock.categoria.ports.aplication.http.mapper.CategoryResponseMapper;
+import com.bootcamp.stock.domain.api.ICategoryServicePort;
+import com.bootcamp.stock.domain.model.Category;
+import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
+import com.bootcamp.stock.domain.utils.pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.pagination.SortUtil;
+import com.bootcamp.stock.ports.aplication.http.controller.CategoryRestController;
+import com.bootcamp.stock.ports.aplication.http.dto.CategoryRequest;
+import com.bootcamp.stock.ports.aplication.http.dto.CategoryResponse;
+import com.bootcamp.stock.ports.aplication.http.mapper.CategoryResponseMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -70,7 +71,7 @@ class CategoryRestControllerTest {
         PagedResult<CategoryResponse> expectedPagedResult = new PagedResult<>(
                 categoryResponses, 0, 5, 1, 3);
 
-        when(categoryService.getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class)))
+        when(categoryService.getCategoriesByNombre(any(SortUtil.class), any(PageRequestUtil.class)))
                 .thenReturn(pagedResult);
         when(categoryResponseMapper.toResponseList(categories)).thenReturn(categoryResponses);
 
@@ -78,7 +79,7 @@ class CategoryRestControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedPagedResult, response.getBody());
-        verify(categoryService, times(1)).getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class));
+        verify(categoryService, times(1)).getCategoriesByNombre(any(SortUtil.class), any(PageRequestUtil.class));
         verify(categoryResponseMapper, times(1)).toResponseList(categories);
     }
 
@@ -102,7 +103,7 @@ class CategoryRestControllerTest {
         PagedResult<CategoryResponse> expectedPagedResult = new PagedResult<>(
                 categoryResponses, 0, 5, 1, 3);
 
-        when(categoryService.getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class)))
+        when(categoryService.getCategoriesByNombre(any(SortUtil.class), any(PageRequestUtil.class)))
                 .thenReturn(pagedResult);
         when(categoryResponseMapper.toResponseList(categories)).thenReturn(categoryResponses);
 
@@ -110,7 +111,7 @@ class CategoryRestControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedPagedResult, response.getBody());
-        verify(categoryService, times(1)).getCategoriesByNombre(any(SortCategory.class), any(PageRequestCategory.class));
+        verify(categoryService, times(1)).getCategoriesByNombre(any(SortUtil.class), any(PageRequestUtil.class));
         verify(categoryResponseMapper, times(1)).toResponseList(categories);
     }
 }
