@@ -34,7 +34,7 @@ public class CategoryRestController {
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @PostMapping
+    @PostMapping("/save-category")
     public ResponseEntity<Void> saveCategory(
             @RequestBody @Parameter(description = "Datos de la categoría a crear", required = true) CategoryRequest categoryRequest) {
         Category category = new Category(null, categoryRequest.getNombre(), categoryRequest.getDescripcion());
@@ -48,7 +48,7 @@ public class CategoryRestController {
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @GetMapping
+    @GetMapping("/get-categories")
     public ResponseEntity<PagedResult<CategoryResponse>> getCategoriesByNombre(
             @RequestParam(defaultValue = "asc") @Parameter(description = "Sort order: asc or desc") String order,
             @PageableDefault(size = 5) @Parameter(hidden = true) Pageable pageable) {

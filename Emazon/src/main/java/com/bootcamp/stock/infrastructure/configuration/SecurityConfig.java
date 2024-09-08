@@ -1,5 +1,6 @@
 package com.bootcamp.stock.infrastructure.configuration;
 
+import com.bootcamp.stock.infrastructure.security.CustomAccessDeniedHandler;
 import com.bootcamp.stock.infrastructure.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -7,9 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.bootcamp.stock.domain.utils.constants.SecurityConstants.*;
 
 @Configuration
 @EnableWebSecurity
@@ -27,15 +31,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/categoria/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/marca/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/articulo/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/suministro/**").hasAuthority("ROLE_AUX_BODEGA")
-                        .requestMatchers("/carrito/**").hasAuthority("ROLE_CLIENTE")
-                        .requestMatchers("/compra/**").hasAuthority("ROLE_CLIENTE")
+                        .requestMatchers("/categoria/save-category").hasAnyRole(ROL_ADMIN)
+                        .requestMatchers("categoria/get-categories").permitAll()
+                        .requestMatchers("/marca/save-marca").hasRole(ROL_ADMIN)
+                        .requestMatchers("/marca/get-marcas").permitAll()
+                        .requestMatchers("/articulo/save-articulo").hasRole(ROL_ADMIN)
+                        .requestMatchers("/articulo/get-aerticulos").permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(new CustomAccessDeniedHandler())
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
