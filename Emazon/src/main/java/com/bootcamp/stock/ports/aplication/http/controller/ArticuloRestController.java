@@ -54,7 +54,7 @@ public class ArticuloRestController {
     public ResponseEntity<PagedResult<ArticuloResponse>> getArticulos(
             @RequestParam(defaultValue = "nombre") @Parameter(description = "Campo de ordenación: nombre, marcaNombre, categoriaNombre") String sortBy,
             @RequestParam(defaultValue = "asc") @Parameter(description = "Orden: asc o desc") String order,
-            @PageableDefault(size = 10) @Parameter(description = "Paginación") Pageable pageable) {
+            @PageableDefault(size = 5) @Parameter(description = "Paginación") Pageable pageable) {
 
         SortUtil.Direction direction = SortUtil.Direction.ASC;
         if ("desc".equalsIgnoreCase(order)) {
