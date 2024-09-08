@@ -26,7 +26,7 @@ public class MarcaRestController {
     private final IMarcaServicePort marcaService;
     private final MarcaResponseMapper marcaResponseMapper;
 
-    @PostMapping
+    @PostMapping("/save-marca")
     @Operation(summary = "Guardar una marca", description = "Crea una nueva marca en el sistema.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Marca creada exitosamente"),
@@ -43,7 +43,7 @@ public class MarcaRestController {
             @ApiResponse(responseCode = "200", description = "Marcas obtenidas exitosamente"),
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
     })
-    @GetMapping
+    @GetMapping("/get-marcas")
     public ResponseEntity<PagedResult<MarcaResponse>> getMarcasByNombre(
             @RequestParam(defaultValue = "asc") @Parameter(description = "Sort order: asc or desc") String order,
             @PageableDefault(size = 5) @Parameter(hidden = true) Pageable pageable) {

@@ -21,6 +21,9 @@ import com.bootcamp.stock.ports.persistency.mysql.repository.IMarcaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -53,7 +56,6 @@ public class BeanConfiguration {
         return new MarcaUseCase(marcaPersistencePort());
     }
 
-
     @Bean
     public IArticuloPersistencePort articuloPersistencePort() {
         return new ArticuloAdapter(articuloRepository, articuloEntityMapper);
@@ -64,4 +66,10 @@ public class BeanConfiguration {
         return new ArticuloUseCase(articuloPersistencePort());
     }
 
+    @Bean
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        return authProvider;
+    }
 }

@@ -36,7 +36,7 @@ public class ArticuloRestController {
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @PostMapping
+    @PostMapping("/save-articulo")
     public ResponseEntity<Void> saveArticulo(
             @RequestBody @Parameter(description = "Datos del artículo a crear", required = true) ArticuloRequest articuloRequest) {
         Articulo articulo = articuloRequestMapper.toArticulo(articuloRequest);
@@ -50,11 +50,11 @@ public class ArticuloRestController {
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @GetMapping
+    @GetMapping("get-aerticulos")
     public ResponseEntity<PagedResult<ArticuloResponse>> getArticulos(
             @RequestParam(defaultValue = "nombre") @Parameter(description = "Campo de ordenación: nombre, marcaNombre, categoriaNombre") String sortBy,
             @RequestParam(defaultValue = "asc") @Parameter(description = "Orden: asc o desc") String order,
-            @PageableDefault(size = 10) @Parameter(description = "Paginación") Pageable pageable) {
+            @PageableDefault(size = 5) @Parameter(description = "Paginación") Pageable pageable) {
 
         SortUtil.Direction direction = SortUtil.Direction.ASC;
         if ("desc".equalsIgnoreCase(order)) {
