@@ -8,6 +8,7 @@ import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.dto.CategoryRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.CategoryResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.CategoryResponseMapper;
+import com.bootcamp.stock.domain.utils.constants.SwaggerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,11 +29,11 @@ public class CategoryRestController {
     private final ICategoryServicePort categoryService;
     private final CategoryResponseMapper categoryResponseMapper;
 
-    @Operation(summary = "Guardar una categoría", description = "Crea una nueva categoría en el sistema.")
+    @Operation(summary = SwaggerConstants.CATEGORY_SAVE_SUMMARY, description = SwaggerConstants.CATEGORY_SAVE_DESCRIPTION)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Categoría creada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+            @ApiResponse(responseCode = "201", description = SwaggerConstants.RESPONSE_SUCCESS),
+            @ApiResponse(responseCode = "400", description = SwaggerConstants.RESPONSE_BAD_REQUEST, content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = SwaggerConstants.RESPONSE_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(implementation = String.class)))
     })
     @PostMapping("/save-category")
     public ResponseEntity<Void> saveCategory(
@@ -42,19 +43,19 @@ public class CategoryRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Obtener categorías ordenadas por nombre", description = "Obtiene una lista de categorías ordenadas por nombre y paginadas.")
+    @Operation(summary = SwaggerConstants.CATEGORY_GET_SUMMARY, description = SwaggerConstants.CATEGORY_GET_DESCRIPTION)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Categorías obtenidas exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+            @ApiResponse(responseCode = "200", description = SwaggerConstants.CATEGORY_GET_SUCCESS),
+            @ApiResponse(responseCode = "400", description = SwaggerConstants.RESPONSE_BAD_REQUEST, content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = SwaggerConstants.RESPONSE_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(implementation = String.class)))
     })
     @GetMapping("/get-categories")
     public ResponseEntity<PagedResult<CategoryResponse>> getCategoriesByNombre(
-            @RequestParam(defaultValue = "asc") @Parameter(description = "Sort order: asc or desc") String order,
-            @PageableDefault(size = 5) @Parameter(hidden = true) Pageable pageable) {
+            @RequestParam(defaultValue = SwaggerConstants.ORDER_DEFAULT_ASC) @Parameter(description = SwaggerConstants.CATEGORY_SORT_ORDER_DESCRIPTION) String order,
+            @PageableDefault(size = 5) @Parameter(description = SwaggerConstants.CATEGORY_PAGINATION_DESCRIPTION, hidden = true) Pageable pageable) {
 
-        SortUtil.Direction direction = order.equalsIgnoreCase("desc") ? SortUtil.Direction.DESC : SortUtil.Direction.ASC;
-        SortUtil sortDomain = new SortUtil("nombre", direction);
+        SortUtil.Direction direction = order.equalsIgnoreCase(SwaggerConstants.ORDER_DEFAULT_ASC) ? SortUtil.Direction.ASC : SortUtil.Direction.DESC;
+        SortUtil sortDomain = new SortUtil(SwaggerConstants.ORDER_DEFAULT, direction);
         PageRequestUtil pageRequestDomain = new PageRequestUtil(pageable.getPageNumber(), pageable.getPageSize());
 
         PagedResult<Category> result = categoryService.getCategoriesByNombre(sortDomain, pageRequestDomain);

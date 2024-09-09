@@ -10,6 +10,7 @@ import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloRequestMapper;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloResponseMapper;
 import com.bootcamp.stock.domain.utils.pagination.PagedResult;
+import com.bootcamp.stock.domain.utils.constants.SwaggerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,6 +25,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.bootcamp.stock.domain.utils.constants.SwaggerConstants.DATOS_ARTICULO;
+import static com.bootcamp.stock.domain.utils.constants.SwaggerConstants.DATOS_SUMINISTRO;
+
 @RestController
 @RequestMapping("/articulo")
 @RequiredArgsConstructor
@@ -32,46 +36,45 @@ public class ArticuloRestController {
     private final ArticuloRequestMapper articuloRequestMapper;
     private final ArticuloResponseMapper articuloResponseMapper;
 
-    @Operation(summary = "Guardar un artículo", description = "Crea un nuevo artículo en el sistema.")
+    @Operation(summary = SwaggerConstants.ARTICULO_SAVE_SUMMARY, description = SwaggerConstants.ARTICULO_SAVE_DESCRIPTION)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Artículo creado exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+            @ApiResponse(responseCode = "201", description = SwaggerConstants.RESPONSE_SUCCESS),
+            @ApiResponse(responseCode = "400", description = SwaggerConstants.RESPONSE_BAD_REQUEST, content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = SwaggerConstants.RESPONSE_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(implementation = String.class)))
     })
     @PostMapping("/save-articulo")
     public ResponseEntity<Void> saveArticulo(
-            @RequestBody @Parameter(description = "Datos del artículo a crear", required = true) ArticuloRequest articuloRequest) {
+            @RequestBody @Parameter(description = DATOS_ARTICULO, required = true) ArticuloRequest articuloRequest) {
         Articulo articulo = articuloRequestMapper.toArticulo(articuloRequest);
         articuloService.saveArticulo(articulo);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Actualizar cantidad de un artículo", description = "Agrega más cantidad a un artículo existente.")
+    @Operation(summary = SwaggerConstants.ARTICULO_AGREGAR_SUMMARY, description = SwaggerConstants.ARTICULO_AGREGAR_DESCRIPTION)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cantidad actualizada exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Artículo no encontrado", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+            @ApiResponse(responseCode = "200", description = SwaggerConstants.RESPONSE_SUCCESS),
+            @ApiResponse(responseCode = "400", description = SwaggerConstants.RESPONSE_BAD_REQUEST, content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = SwaggerConstants.RESPONSE_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(implementation = String.class)))
     })
     @PutMapping("/agregar-suministro")
     public ResponseEntity<Void> agregarSuministro(
-            @RequestBody @Valid @Parameter(description = "ID del artículo y cantidad a agregar", required = true)
+            @RequestBody @Valid @Parameter(description = DATOS_SUMINISTRO, required = true)
             AgregarSuministroRequest agregarSuministroRequest) {
         articuloService.agregarSuministro(agregarSuministroRequest.getArticuloID(), agregarSuministroRequest.getCantidad());
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Obtener artículos ordenados por criterio", description = "Obtiene una lista de artículos ordenados por nombre, nombre de marca o categoría y paginados.")
+    @Operation(summary = SwaggerConstants.ARTICULO_GET_SUMMARY, description = SwaggerConstants.ARTICULO_GET_DESCRIPTION)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Artículos obtenidos exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+            @ApiResponse(responseCode = "200", description = SwaggerConstants.ARTICULO_GET_SUCCESS),
+            @ApiResponse(responseCode = "400", description = SwaggerConstants.RESPONSE_BAD_REQUEST, content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = SwaggerConstants.RESPONSE_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(implementation = String.class)))
     })
     @GetMapping("/get-articulos")
     public ResponseEntity<PagedResult<ArticuloResponse>> getArticulos(
-            @RequestParam(defaultValue = "nombre") @Parameter(description = "Campo de ordenación: nombre, marcaNombre, categoriaNombre") String sortBy,
-            @RequestParam(defaultValue = "asc") @Parameter(description = "Orden: asc o desc") String order,
-            @PageableDefault(size = 10) @Parameter(description = "Paginación") Pageable pageable) {
+            @RequestParam(defaultValue = SwaggerConstants.ORDER_DEFAULT) @Parameter(description = SwaggerConstants.ARTICULO_ORDER_DESCRIPTION) String sortBy,
+            @RequestParam(defaultValue = SwaggerConstants.ORDER_DEFAULT_ASC) @Parameter(description = SwaggerConstants.ARTICULO_ORDER_DIRECTION_DESCRIPTION) String order,
+            @PageableDefault(size = 5) @Parameter(description = SwaggerConstants.ARTICULO_PAGINATION_DESCRIPTION) Pageable pageable) {
 
         SortUtil.Direction direction = SortUtil.Direction.ASC;
         if ("desc".equalsIgnoreCase(order)) {
