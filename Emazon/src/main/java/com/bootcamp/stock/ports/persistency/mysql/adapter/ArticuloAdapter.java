@@ -8,6 +8,7 @@ import com.bootcamp.stock.ports.persistency.mysql.entity.ArticuloEntity;
 import com.bootcamp.stock.ports.persistency.mysql.mapper.ArticuloEntityMapper;
 import com.bootcamp.stock.ports.persistency.mysql.repository.IArticuloRepository;
 import com.bootcamp.stock.domain.utils.pagination.PagedResult;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,7 @@ public class ArticuloAdapter implements IArticuloPersistencePort {
     private final ArticuloEntityMapper articuloEntityMapper;
 
     @Override
+    @Transactional
     public void saveArticulo(Articulo articulo) {
         articuloRepository.save(articuloEntityMapper.toEntity(articulo));
     }
@@ -81,6 +83,12 @@ public class ArticuloAdapter implements IArticuloPersistencePort {
                 page.getTotalPages(),
                 page.getTotalElements()
         );
+    }
+
+    @Override
+    public Optional<Articulo> findById(Long id) {
+        return articuloRepository.findById(id)
+                .map(articuloEntityMapper::toArticulo);
     }
 
     @Override

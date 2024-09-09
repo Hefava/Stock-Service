@@ -4,6 +4,7 @@ import com.bootcamp.stock.domain.api.IArticuloServicePort;
 import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.pagination.SortUtil;
+import com.bootcamp.stock.ports.aplication.http.dto.AgregarSuministroRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloRequestMapper;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -44,17 +46,32 @@ public class ArticuloRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = "Actualizar cantidad de un artículo", description = "Agrega más cantidad a un artículo existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cantidad actualizada exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Artículo no encontrado", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    @PutMapping("/agregar-suministro")
+    public ResponseEntity<Void> agregarSuministro(
+            @RequestBody @Valid @Parameter(description = "ID del artículo y cantidad a agregar", required = true)
+            AgregarSuministroRequest agregarSuministroRequest) {
+        articuloService.agregarSuministro(agregarSuministroRequest.getArticuloID(), agregarSuministroRequest.getCantidad());
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "Obtener artículos ordenados por criterio", description = "Obtiene una lista de artículos ordenados por nombre, nombre de marca o categoría y paginados.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Artículos obtenidos exitosamente"),
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @GetMapping("get-aerticulos")
+    @GetMapping("/get-articulos")
     public ResponseEntity<PagedResult<ArticuloResponse>> getArticulos(
             @RequestParam(defaultValue = "nombre") @Parameter(description = "Campo de ordenación: nombre, marcaNombre, categoriaNombre") String sortBy,
             @RequestParam(defaultValue = "asc") @Parameter(description = "Orden: asc o desc") String order,
-            @PageableDefault(size = 5) @Parameter(description = "Paginación") Pageable pageable) {
+            @PageableDefault(size = 10) @Parameter(description = "Paginación") Pageable pageable) {
 
         SortUtil.Direction direction = SortUtil.Direction.ASC;
         if ("desc".equalsIgnoreCase(order)) {
