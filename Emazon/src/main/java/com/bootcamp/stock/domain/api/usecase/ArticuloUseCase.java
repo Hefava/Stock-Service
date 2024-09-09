@@ -1,6 +1,7 @@
 package com.bootcamp.stock.domain.api.usecase;
 
 import com.bootcamp.stock.domain.api.IArticuloServicePort;
+import com.bootcamp.stock.domain.exception.ArticuloNotFoundException;
 import com.bootcamp.stock.domain.exception.categoryCantBeRepeatedException;
 import com.bootcamp.stock.domain.exception.invalidCategoryCountException;
 import com.bootcamp.stock.domain.model.Articulo;
@@ -41,6 +42,16 @@ public class ArticuloUseCase implements IArticuloServicePort {
             throw new categoryCantBeRepeatedException();
         }
 
+        articuloPersistencePort.saveArticulo(articulo);
+    }
+
+    @Override
+    public void agregarSuministro(Long id, Long cantidad) {
+        Articulo articulo = articuloPersistencePort.findById(id)
+                .orElseThrow(ArticuloNotFoundException::new);
+
+        Long nuevaCantidad = articulo.getCantidad() + cantidad;
+        articulo.setCantidad(nuevaCantidad);
         articuloPersistencePort.saveArticulo(articulo);
     }
 

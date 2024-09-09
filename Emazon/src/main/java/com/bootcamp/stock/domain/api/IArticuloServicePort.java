@@ -8,6 +8,7 @@ import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 public interface IArticuloServicePort {
 
     void saveArticulo(Articulo articulo);
+    void agregarSuministro(Long id, Long cantidad);
     PagedResult<Articulo> getArticulos(SortUtil sort, PageRequestUtil pageRequest);
     PagedResult<Articulo> findAllOrderByCategoriaNombre(SortUtil sort, PageRequestUtil pageRequest);
 }

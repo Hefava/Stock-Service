@@ -15,5 +15,7 @@ public interface IArticuloPersistencePort {
 
     PagedResult<Articulo> findAllOrderByCategoriaNombre(SortUtil sort, PageRequestUtil pageRequest);
 
+    Optional<Articulo> findById(Long id);
+
     Optional<Articulo> findByNombre(String nombre);
 }

@@ -4,12 +4,13 @@ import com.bootcamp.stock.domain.api.IArticuloServicePort;
 import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.pagination.SortUtil;
+import com.bootcamp.stock.ports.aplication.http.controller.ArticuloRestController;
+import com.bootcamp.stock.ports.aplication.http.dto.AgregarSuministroRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloRequestMapper;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloResponseMapper;
 import com.bootcamp.stock.domain.utils.pagination.PagedResult;
-import com.bootcamp.stock.ports.aplication.http.controller.ArticuloRestController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +49,7 @@ class ArticuloRestControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testSaveArticulo() {
         // Arrange
         ArticuloRequest articuloRequest = new ArticuloRequest();
@@ -62,6 +65,23 @@ class ArticuloRestControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
+    void testAgregarSuministro() {
+        // Arrange
+        AgregarSuministroRequest agregarSuministroRequest = new AgregarSuministroRequest();
+        agregarSuministroRequest.setArticuloID(1L);
+        agregarSuministroRequest.setCantidad(5L);
+
+        // Act
+        ResponseEntity<Void> responseEntity = articuloRestController.agregarSuministro(agregarSuministroRequest);
+
+        // Assert
+        verify(articuloService, times(1)).agregarSuministro(1L, 5L);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
     void testGetArticulosSortedByArticuloNameAsc() {
         // Arrange
         List<Articulo> articulos = Collections.singletonList(new Articulo());
@@ -83,6 +103,7 @@ class ArticuloRestControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testGetArticulosSortedByArticuloNameDesc() {
         // Arrange
         List<Articulo> articulos = Collections.singletonList(new Articulo());
@@ -104,6 +125,7 @@ class ArticuloRestControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testGetArticulosSortedByMarcaNameAsc() {
         // Arrange
         List<Articulo> articulos = Collections.singletonList(new Articulo());
@@ -125,6 +147,7 @@ class ArticuloRestControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testGetArticulosSortedByMarcaNameDesc() {
         // Arrange
         List<Articulo> articulos = Collections.singletonList(new Articulo());
@@ -146,6 +169,7 @@ class ArticuloRestControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testGetArticulosSortedByCategoriaNameAsc() {
         // Arrange
         List<Articulo> articulos = Collections.singletonList(new Articulo());
@@ -167,6 +191,7 @@ class ArticuloRestControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testGetArticulosSortedByCategoriaNameDesc() {
         // Arrange
         List<Articulo> articulos = Collections.singletonList(new Articulo());

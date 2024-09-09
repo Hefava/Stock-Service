@@ -33,12 +33,14 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/categoria/save-category").hasAnyRole(ROL_ADMIN)
                         .requestMatchers("categoria/get-categories").permitAll()
                         .requestMatchers("/marca/save-marca").hasRole(ROL_ADMIN)
                         .requestMatchers("/marca/get-marcas").permitAll()
                         .requestMatchers("/articulo/save-articulo").hasRole(ROL_ADMIN)
-                        .requestMatchers("/articulo/get-aerticulos").permitAll()
+                        .requestMatchers("/articulo/get-articulos").permitAll()
+                        .requestMatchers("/articulo/agregar-suministro").hasRole(ROL_AUX_BODEGA)
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
