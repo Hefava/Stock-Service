@@ -39,8 +39,8 @@ public class SecurityConfig {
                         .requestMatchers("/marca/save-marca").hasRole(ROL_ADMIN)
                         .requestMatchers("/marca/get-marcas").permitAll()
                         .requestMatchers("/articulo/save-articulo").hasRole(ROL_ADMIN)
+                        .requestMatchers("/articulo/agregar-cantidad-articulo").hasRole(ROL_AUX_BODEGA)
                         .requestMatchers("/articulo/get-articulos").permitAll()
-                        .requestMatchers("/articulo/agregar-suministro").hasRole(ROL_AUX_BODEGA)
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

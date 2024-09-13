@@ -56,8 +56,8 @@ public class ArticuloRestController {
             @ApiResponse(responseCode = "400", description = SwaggerConstants.RESPONSE_BAD_REQUEST, content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = SwaggerConstants.RESPONSE_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @PutMapping("/agregar-suministro")
-    public ResponseEntity<Void> agregarSuministro(
+    @PutMapping("/agregar-cantidad-articulo")
+    public ResponseEntity<Void> agregarCantidadArticulo(
             @RequestBody @Valid @Parameter(description = DATOS_SUMINISTRO, required = true)
             AgregarSuministroRequest agregarSuministroRequest) {
         articuloService.agregarSuministro(agregarSuministroRequest.getArticuloID(), agregarSuministroRequest.getCantidad());

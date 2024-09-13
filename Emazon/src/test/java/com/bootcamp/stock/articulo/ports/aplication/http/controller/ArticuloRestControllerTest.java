@@ -73,7 +73,7 @@ class ArticuloRestControllerTest {
         agregarSuministroRequest.setCantidad(5L);
 
         // Act
-        ResponseEntity<Void> responseEntity = articuloRestController.agregarSuministro(agregarSuministroRequest);
+        ResponseEntity<Void> responseEntity = articuloRestController.agregarCantidadArticulo(agregarSuministroRequest);
 
         // Assert
         verify(articuloService, times(1)).agregarSuministro(1L, 5L);

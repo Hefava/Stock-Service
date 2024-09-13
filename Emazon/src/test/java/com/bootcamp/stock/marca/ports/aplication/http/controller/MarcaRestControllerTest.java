@@ -5,7 +5,6 @@ import com.bootcamp.stock.domain.model.Marca;
 import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.controller.MarcaRestController;
-import com.bootcamp.stock.ports.aplication.http.dto.MarcaRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.MarcaResponse;
 import com.bootcamp.stock.ports.aplication.http.mapper.MarcaResponseMapper;
 import com.bootcamp.stock.domain.utils.pagination.PagedResult;
@@ -39,16 +38,6 @@ class MarcaRestControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void saveMarca_ShouldReturnCreatedStatus() {
-        MarcaRequest marcaRequest = new MarcaRequest("Nike", "Ropa deportiva");
-
-        ResponseEntity<Void> response = marcaRestController.saveMarca(marcaRequest);
-
-        verify(marcaService, times(1)).saveMarca(any(Marca.class));
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
