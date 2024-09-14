@@ -5,8 +5,10 @@ import com.bootcamp.stock.domain.model.Articulo;
 import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 import com.bootcamp.stock.ports.aplication.http.dto.AgregarSuministroRequest;
+import com.bootcamp.stock.ports.aplication.http.dto.ArticuloInfoResponse;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloRequest;
 import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
+import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloInfoResponseMapper;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloRequestMapper;
 import com.bootcamp.stock.ports.aplication.http.mapper.ArticuloResponseMapper;
 import com.bootcamp.stock.domain.utils.pagination.PagedResult;
@@ -35,6 +37,7 @@ public class ArticuloRestController {
     private final IArticuloServicePort articuloService;
     private final ArticuloRequestMapper articuloRequestMapper;
     private final ArticuloResponseMapper articuloResponseMapper;
+    private final ArticuloInfoResponseMapper articuloInfoResponseMapper;
 
     @Operation(summary = SwaggerConstants.ARTICULO_SAVE_SUMMARY, description = SwaggerConstants.ARTICULO_SAVE_DESCRIPTION)
     @ApiResponses(value = {
@@ -103,5 +106,11 @@ public class ArticuloRestController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/articulo-info/{articuloID}")
+    public ResponseEntity<ArticuloInfoResponse> getArticuloInfo(@PathVariable Long articuloID) {
+        Articulo articulo = articuloService.articuloInfo(articuloID);
+        return ResponseEntity.ok(articuloInfoResponseMapper.toResponse(articulo));
     }
 }

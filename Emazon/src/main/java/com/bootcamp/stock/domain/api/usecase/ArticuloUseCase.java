@@ -56,6 +56,12 @@ public class ArticuloUseCase implements IArticuloServicePort {
     }
 
     @Override
+    public Articulo articuloInfo(Long articuloID) {
+        return articuloPersistencePort.findById(articuloID)
+                .orElseThrow(ArticuloNotFoundException::new);
+    }
+
+    @Override
     public PagedResult<Articulo> getArticulos(SortUtil sort, PageRequestUtil pageRequest) {
         return articuloPersistencePort.getArticulos(sort, pageRequest);
     }

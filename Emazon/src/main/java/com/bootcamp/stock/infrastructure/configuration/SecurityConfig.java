@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/articulo/save-articulo").hasRole(ROL_ADMIN)
                         .requestMatchers("/articulo/agregar-cantidad-articulo").hasRole(ROL_AUX_BODEGA)
                         .requestMatchers("/articulo/get-articulos").permitAll()
+                        .requestMatchers("/articulo/articulo-info/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

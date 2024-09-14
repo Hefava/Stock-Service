@@ -9,6 +9,7 @@ import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 import java.util.Optional;
 
 public interface IArticuloPersistencePort {
+
     void saveArticulo(Articulo articulo);
 
     PagedResult<Articulo> getArticulos(SortUtil sort, PageRequestUtil pageRequest);

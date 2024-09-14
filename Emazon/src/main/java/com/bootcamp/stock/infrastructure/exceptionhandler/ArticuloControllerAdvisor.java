@@ -1,5 +1,6 @@
 package com.bootcamp.stock.infrastructure.exceptionhandler;
 
+import com.bootcamp.stock.domain.exception.ArticuloNotFoundException;
 import com.bootcamp.stock.domain.exception.categoryCantBeRepeatedException;
 import com.bootcamp.stock.domain.exception.invalidCategoryCountException;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,12 @@ import java.util.Map;
 public class ArticuloControllerAdvisor {
 
     private static final String MESSAGE = "Message";
+
+    @ExceptionHandler(ArticuloNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleArticuloNotFoundException(ArticuloNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(MESSAGE, ArticuloExceptionResponse.ARTICULO_NOT_FOUND.getMessage()));
+    }
 
     @ExceptionHandler(categoryCantBeRepeatedException.class)
     public ResponseEntity<Map<String, String>> handleCategoryCantBeRepeatedException(

@@ -1,8 +1,8 @@
 package com.bootcamp.stock.ports.aplication.http.mapper;
 
 import com.bootcamp.stock.domain.model.Articulo;
-import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
 import com.bootcamp.stock.domain.model.Category;
+import com.bootcamp.stock.ports.aplication.http.dto.ArticuloResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -14,7 +14,6 @@ import java.util.Set;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface ArticuloResponseMapper {
-
     @Mapping(source = "marca.nombre", target = "marcaNombre")
     @Mapping(target = "categorias", expression = "java(mapCategorias(articulo.getCategorias()))")
     ArticuloResponse toResponse(Articulo articulo);
