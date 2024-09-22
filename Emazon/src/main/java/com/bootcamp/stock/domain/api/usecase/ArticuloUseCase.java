@@ -67,6 +67,17 @@ public class ArticuloUseCase implements IArticuloServicePort {
     }
 
     @Override
+    public PagedResult<Articulo> getArticulosByIdsAndFilters(
+            List<Long> ids,
+            String categoriaNombre,
+            String marcaNombre,
+            SortUtil sort,
+            PageRequestUtil pageRequest
+    ) {
+        return articuloPersistencePort.findByIdsAndFilters(ids, sort, pageRequest, categoriaNombre, marcaNombre);
+    }
+
+    @Override
     public PagedResult<Articulo> findAllOrderByCategoriaNombre(SortUtil sort, PageRequestUtil pageRequest) {
         return articuloPersistencePort.findAllOrderByCategoriaNombre(sort, pageRequest);
     }

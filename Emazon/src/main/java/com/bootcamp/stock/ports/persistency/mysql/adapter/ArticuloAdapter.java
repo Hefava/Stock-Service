@@ -86,6 +86,36 @@ public class ArticuloAdapter implements IArticuloPersistencePort {
     }
 
     @Override
+    public PagedResult<Articulo> findByIdsAndFilters(List<Long> ids, SortUtil sort, PageRequestUtil pageRequest, String categoriaNombre, String marcaNombre) {
+        Sort sortJpa = Sort.by(sort.getProperty());
+        if (sort.getDirection() == SortUtil.Direction.DESC) {
+            sortJpa = sortJpa.descending();
+        } else {
+            sortJpa = sortJpa.ascending();
+        }
+
+        PageRequest pageRequestJpa = PageRequest.of(pageRequest.getPage(), pageRequest.getSize(), sortJpa);
+
+        Page<ArticuloEntity> page;
+        if (categoriaNombre != null && marcaNombre != null) {
+            page = articuloRepository.findByArticuloIDInAndCategoriaNombreAndMarcaNombre(ids, categoriaNombre, marcaNombre, pageRequestJpa);
+        } else if (categoriaNombre != null) {
+            page = articuloRepository.findByArticuloIDInAndCategoriaNombre(ids, categoriaNombre, pageRequestJpa);
+        } else if (marcaNombre != null) {
+            page = articuloRepository.findByArticuloIDInAndMarcaNombre(ids, marcaNombre, pageRequestJpa);
+        } else {
+            page = articuloRepository.findAllById(ids, pageRequestJpa);
+        }
+
+        List<Articulo> articulos = page.getContent().stream()
+                .map(articuloEntityMapper::toArticulo)
+                .toList();
+
+        return new PagedResult<>(articulos, page.getNumber(), page.getSize(), page.getTotalPages(), page.getTotalElements());
+    }
+
+
+    @Override
     public Optional<Articulo> findById(Long id) {
         return articuloRepository.findById(id)
                 .map(articuloEntityMapper::toArticulo);

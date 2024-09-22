@@ -5,6 +5,8 @@ import com.bootcamp.stock.domain.utils.pagination.PageRequestUtil;
 import com.bootcamp.stock.domain.utils.pagination.PagedResult;
 import com.bootcamp.stock.domain.utils.pagination.SortUtil;
 
+import java.util.List;
+
 public interface IArticuloServicePort {
 
     void saveArticulo(Articulo articulo);
@@ -12,4 +14,12 @@ public interface IArticuloServicePort {
     PagedResult<Articulo> getArticulos(SortUtil sort, PageRequestUtil pageRequest);
     Articulo articuloInfo(Long articuloID);
     PagedResult<Articulo> findAllOrderByCategoriaNombre(SortUtil sort, PageRequestUtil pageRequest);
+
+    PagedResult<Articulo> getArticulosByIdsAndFilters(
+            List<Long> ids,
+            String categoriaNombre,
+            String marcaNombre,
+            SortUtil sort,
+            PageRequestUtil pageRequest
+    );
 }
