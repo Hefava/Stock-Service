@@ -12,17 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticuloCarritoInfoResponse {
+    private Long articuloID;
     private String nombre;
     private Long cantidad;
-    private Long precio;
+    private Double precio;
     private String marcaNombre;
-    private List<CategoriaInfoDto> categorias;
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CategoriaInfoDto {
-        private String nombre;
-    }
+    private List<String> categorias;
 }

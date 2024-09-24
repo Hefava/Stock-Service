@@ -16,9 +16,9 @@ public interface ArticuloCarritoInfoResponseMapper {
     @Mapping(target = "categorias", expression = "java(mapCategorias(articulo.getCategorias()))")
     ArticuloCarritoInfoResponse toResponse(Articulo articulo);
 
-    default List<ArticuloCarritoInfoResponse.CategoriaInfoDto> mapCategorias(Set<Category> categorias) {
+    default List<String> mapCategorias(Set<Category> categorias) {
         return categorias.stream()
-                .map(categoria -> new ArticuloCarritoInfoResponse.CategoriaInfoDto(categoria.getNombre()))
+                .map(Category::getNombre)
                 .toList();
     }
 

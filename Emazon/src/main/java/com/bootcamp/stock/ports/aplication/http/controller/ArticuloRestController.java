@@ -119,7 +119,7 @@ public class ArticuloRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @PostMapping("/get-articulos-by-ids")
+    @GetMapping("/get-articulos-by-ids")
     public ResponseEntity<PagedResult<ArticuloCarritoInfoResponse>> getArticulosByIds(
             @RequestBody ArticuloCarritoInfoRequest request) {
 

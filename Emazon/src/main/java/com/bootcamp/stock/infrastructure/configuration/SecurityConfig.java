@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/articulo/agregar-cantidad-articulo").hasRole(ROL_AUX_BODEGA)
                         .requestMatchers("/articulo/get-articulos").permitAll()
                         .requestMatchers("/articulo/articulo-info/*").permitAll()
-                        .requestMatchers("/articulo/get-articulos-by-ids").permitAll()
+                        .requestMatchers("/articulo/get-articulos-by-ids").hasRole(ROL_CLIENTE)
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
