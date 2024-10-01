@@ -56,6 +56,16 @@ public class ArticuloUseCase implements IArticuloServicePort {
     }
 
     @Override
+    public void restarExistencia(Long id, Long cantidad) {
+        Articulo articulo = articuloPersistencePort.findById(id)
+                .orElseThrow(ArticuloNotFoundException::new);
+
+        Long nuevaCantidad = articulo.getCantidad() - cantidad;
+        articulo.setCantidad(nuevaCantidad);
+        articuloPersistencePort.saveArticulo(articulo);
+    }
+
+    @Override
     public Articulo articuloInfo(Long articuloID) {
         return articuloPersistencePort.findById(articuloID)
                 .orElseThrow(ArticuloNotFoundException::new);

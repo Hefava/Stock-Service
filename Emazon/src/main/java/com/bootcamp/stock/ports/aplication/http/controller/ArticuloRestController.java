@@ -25,8 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.bootcamp.stock.domain.utils.constants.SwaggerConstants.DATOS_ARTICULO;
-import static com.bootcamp.stock.domain.utils.constants.SwaggerConstants.DATOS_SUMINISTRO;
+import static com.bootcamp.stock.domain.utils.constants.SwaggerConstants.*;
 
 @RestController
 @RequestMapping("/articulo")
@@ -63,6 +62,14 @@ public class ArticuloRestController {
             @RequestBody @Valid @Parameter(description = DATOS_SUMINISTRO, required = true)
             AgregarSuministroRequest agregarSuministroRequest) {
         articuloService.agregarSuministro(agregarSuministroRequest.getArticuloID(), agregarSuministroRequest.getCantidad());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/restar-cantidad-articulo")
+    public ResponseEntity<Void> restarCantidadArticulo(
+            @RequestBody @Valid @Parameter(description = DATOS_VENTA, required = true)
+            AgregarSuministroRequest agregarSuministroRequest) {
+        articuloService.restarExistencia(agregarSuministroRequest.getArticuloID(), agregarSuministroRequest.getCantidad());
         return ResponseEntity.ok().build();
     }
 

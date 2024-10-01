@@ -11,6 +11,7 @@ public interface IArticuloServicePort {
 
     void saveArticulo(Articulo articulo);
     void agregarSuministro(Long id, Long cantidad);
+    void restarExistencia(Long id, Long cantidad);
     PagedResult<Articulo> getArticulos(SortUtil sort, PageRequestUtil pageRequest);
     Articulo articuloInfo(Long articuloID);
     PagedResult<Articulo> findAllOrderByCategoriaNombre(SortUtil sort, PageRequestUtil pageRequest);

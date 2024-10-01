@@ -23,6 +23,7 @@ public class SwaggerConstants {
     public static final String ARTICULO_PAGINATION_DESCRIPTION = "Paginación";
     public static final String DATOS_ARTICULO = "Datos del artículo a crear";
     public  static final String DATOS_SUMINISTRO = "ID del artículo y cantidad a agregar";
+    public  static final String DATOS_VENTA = "ID del artículo y cantidad a restar";
 
     // Category Controller
 
